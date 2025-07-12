@@ -1,10 +1,10 @@
-import js from '@eslint/js';
 import globals from 'globals';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import tseslint from 'typescript-eslint';
 import prettier from 'eslint-config-prettier';
 import pluginPrettier from 'eslint-plugin-prettier';
+import parser from '@typescript-eslint/parser';
 
 export default tseslint.config(
   {
@@ -14,6 +14,7 @@ export default tseslint.config(
   {
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
+      parser,
       ecmaVersion: 2020,
       sourceType: 'module',
       globals: globals.browser,
@@ -38,13 +39,6 @@ export default tseslint.config(
       },
     },
   },
-
-  // Добавляем Prettier как отдельный конфиг
   prettier,
-
-  // Добавляем строгие правила TypeScript как отдельные объекты
-  ...tseslint.configs.strict,
-
-  // Добавляем базовые правила JS
-  js.configs.recommended
+  ...tseslint.configs.strict
 );
