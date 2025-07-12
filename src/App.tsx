@@ -17,7 +17,7 @@ class App extends React.Component<unknown, AppState> {
 
   whenSearch = async (query: string) => {
     try {
-      const data = await getData(query);
+      const data = await getData(query.trim());
       this.setState({ results: data, error: undefined });
     } catch (error) {
       this.setState({ results: [], error: `${error} Nothing found for your request!` });
