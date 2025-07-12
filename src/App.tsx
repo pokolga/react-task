@@ -16,6 +16,7 @@ class App extends React.Component<unknown, AppState> {
   }
 
   whenSearch = async (query: string) => {
+    localStorage.setItem('query', query.trim());
     try {
       const data = await getData(query.trim());
       this.setState({ results: data, error: undefined });
