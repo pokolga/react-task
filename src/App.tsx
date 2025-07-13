@@ -27,7 +27,7 @@ class App extends React.Component<unknown, AppState> {
       this.setState({ results: data });
     } catch (error) {
       let errorMessage = '';
-      if (typeof error === 'string' && /404/.test(error)) {
+      if (error && /404/.test(String(error))) {
         errorMessage = 'Nothing was found for your request';
       }
       this.setState({ results: [], error: `${error} ${errorMessage}!` });
