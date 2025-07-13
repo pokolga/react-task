@@ -33,6 +33,12 @@ export default class Search extends React.Component<Props, SearchState> {
     this.setState({ query: event.target.value });
   };
 
+  handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      this.searchClick();
+    }
+  };
+
   render(): React.ReactNode {
     return (
       <fieldset className="border border-blue-800 border-solid flex gap-2 m-2 p-2 rounded-xs">
@@ -41,6 +47,7 @@ export default class Search extends React.Component<Props, SearchState> {
           type="text"
           value={this.state.query}
           onChange={this.inputChange}
+          onKeyDown={this.handleKeyDown}
           placeholder="Search..."
           className="border border-gray-600 bg-white px-4 py-2 rounded w-[90%]"
         />
