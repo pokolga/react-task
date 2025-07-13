@@ -35,7 +35,7 @@ class App extends React.Component<unknown, AppState> {
   render(): React.ReactNode {
     return (
       <>
-        <h1 className="text-2xl font-bold text-white text-center my-4">Characters Rick&Morthy</h1>
+        <h1 className="text-2xl font-bold text-blue-600 text-center my-4">Characters Rick&Morty</h1>
         <Search onSearch={this.whenSearch} />
         <Result
           results={this.state.results}

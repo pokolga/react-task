@@ -9,7 +9,7 @@ export class Card extends React.Component<CardProps> {
   render(): React.ReactNode {
     const { character } = this.props;
     return (
-      <div className="bg-white shadow rounded p-4 w-64">
+      <div className="bg-white shadow rounded p-4 w-64 hover:shadow-xl">
         <img
           src={character.image}
           alt={character.name}

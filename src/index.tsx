@@ -4,7 +4,7 @@ import App from './App.tsx';
 
 const root = document.getElementById('root');
 
-if (root instanceof HTMLDivElement) {
+if (root instanceof HTMLElement) {
   createRoot(root).render(
     <StrictMode>
       <App />

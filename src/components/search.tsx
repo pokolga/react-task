@@ -42,11 +42,11 @@ export default class Search extends React.Component<Props, SearchState> {
           value={this.state.query}
           onChange={this.inputChange}
           placeholder="Search..."
-          className="border border-gray px-4 py-2 rounded bg-gray-100 w-[90%]"
+          className="border border-gray-600 bg-white px-4 py-2 rounded w-[90%]"
         />
         <button
           onClick={this.searchClick}
-          className="bg-blue-800  border-none text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-blue-800  border-none text-white px-4 py-2 rounded hover:bg-blue-600 hover:cursor-pointer"
         >
           Search
         </button>
