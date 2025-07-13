@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import type { Character } from '../models/types';
 import { Card } from './card';
 
@@ -7,7 +7,7 @@ interface ListProps {
 }
 
 export class CardsList extends React.Component<ListProps> {
-  render(): React.ReactNode {
+  render(): ReactNode {
     return (
       <div className="flex flex-wrap gap-4 justify-center">
         {this.props.results.map((char) => (

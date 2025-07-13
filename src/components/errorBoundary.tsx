@@ -1,4 +1,4 @@
-import React, { type ErrorInfo, type ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 
 interface ErrorProps {
   children: ReactNode;
@@ -17,11 +17,6 @@ export default class ErrorBoundary extends React.Component<ErrorProps, ErrorStat
 
   static getDerivedStateFromError(error: Error): ErrorState {
     return { hasError: true, error };
-  }
-
-  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    // eslint-disable-next-line no-console
-    console.error('Error:', error, errorInfo);
   }
 
   tryAgain = () => this.setState({ hasError: false, error: null });
