@@ -1,69 +1,109 @@
-# React + TypeScript + Vite
+# React project 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the project for the **React 2025 Q3** course at **Rolling Scopes School**, developed by  [**Olga Paklonskaya**](https://github.com/pokolga) under the mentorship of [**Marharyta Malets**](https://github.com/margaryta-maletz).
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Technology Stack
 
-## Expanding the ESLint configuration
+### React + TypeScript + Vite + Tailwind CSS
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**React** – Used for building dynamic and interactive user interfaces through a component-based architecture and declarative programming.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+**HTML5** – Used for structuring the content following modern web standards.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+**TypeScript** – Used for enhancing JavaScript with static typing to improve code quality.
+  
+**Tailwind CSS** – Used for building modern and responsive UI with a utility-first approach.
+ 
+**Vite** – Used for bundling optimized production builds.
+ 
+**ESLint** – Used for enforcing coding standards and catching errors early during development.
+  
+**Prettier** – Used for ensuring consistent code style across the entire project.
+ 
+**Husky** – Used for automating code checks before commits.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+
+## Project setup
+
+Follow these steps to set up and run the project locally.
+
+### Basic requirements
+
+Make sure to have the following installed:
+
+- [Node.js](https://nodejs.org/) version: **23.x** or higher
+- [npm](https://www.npmjs.com/)
+
+Verify installation by running in the console:
+
+```bash
+node -v
+npm -v
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Setup Instructions
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+1. **Open the console and clone the repository**
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+```bash
+git clone https://github.com/pokolga/react-task.git
 ```
+
+This will create the new folder with all the files from the repository.
+
+2. **Navigate to the project directory**
+
+```bash
+cd react-task
+```
+
+3. **Install project dependencies**
+
+```bash
+npm install
+```
+
+This will install all packages listed in `package.json`.
+
+4. **Initialize Husky for Git hooks**
+
+```bash
+npm run prepare
+```
+
+This will set up Husky to run the Git hooks for pre-commit and other automation.
+
+5. **Start the development server**
+
+```bash
+npm run dev
+```
+
+This will launch the Vite development server to test that the project has been setup correctly.
+
+6. **Tailwind CSS Development Setup**
+
+VS Code Extensions
+
+To enhance your development experience with Tailwind CSS, install the following extension:
+
+1. Open VS Code
+2. Go to Extensions (Ctrl+Shift+X)
+3. Search for "Tailwind CSS IntelliSense"
+4. Click Install
+
+This extension provides autocomplete suggestions, linting, hover previews
+
+## 📜 Scripts
+
+Use the following scripts to assist with development, formatting, linting, building, and deploying.
+
+ `npm run lint`           Execute ESLint on all `.tsx` files to check for code quality issues.                                                                              
+ `npm run format:fix`     Execute Prettier on all `.tsx` files in the `src/` folder to check if the files are properly formatted and automatically fix all fixable issues. 
+ `npm run dev`            Start a local development server with Vite. 
+ `npm run build`          Build the project for production.           
+ `npm run preview`        Preview the production build locally.       
+ `npm run deploy`         Build the project and deploy                
+ `npm run prepare`        Set up Husky hooks. 
+                                       
