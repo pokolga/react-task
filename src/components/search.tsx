@@ -17,12 +17,13 @@ export default class Search extends React.Component<Props, SearchState> {
   }
 
   componentDidMount() {
-    const initialValue = localStorage.getItem('query');
-    if (initialValue !== null) {
-      this.setState({ query: initialValue }, () => {
-        this.searchClick();
-      });
+    let initialValue = localStorage.getItem('query');
+    if (initialValue === null) {
+      initialValue = '';
     }
+    this.setState({ query: initialValue }, () => {
+      this.searchClick();
+    });
   }
 
   searchClick = () => {
