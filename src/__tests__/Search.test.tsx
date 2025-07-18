@@ -60,3 +60,14 @@ it('LocalStorage Integration: retrieves saved search term on component mount', a
 
   expect(onSearchMock).toHaveBeenCalledWith('Morty');
 });
+
+it('calls onSearch when Enter key is pressed in input field', async () => {
+  const onSearchMock = vi.fn();
+
+  render(<Search onSearch={onSearchMock} />);
+  const input = screen.getByPlaceholderText('Search...');
+
+  await userEvent.type(input, 'Morty{enter}');
+
+  expect(onSearchMock).toHaveBeenCalledWith('Morty');
+});
