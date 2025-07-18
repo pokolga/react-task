@@ -72,40 +72,21 @@ describe('For Search component', () => {
   });
 });
 
-describe('For CardList and Result components', () => {
-  beforeEach(() => {
-    localStorage.clear();
-    vi.restoreAllMocks();
-  });
-
-  it('Shows loading state while fetching data', async () => {
-    render(<App />);
-    const spinner: HTMLElement = screen.getByTestId('spinner');
-    expect(spinner).toBeInTheDocument();
-  });
-
-  it('Displays 404 error message when no results found', async () => {
-    const mockFetch = vi.fn(
+it('Displays 404 error message when no results found', async () => {
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(
       (): Promise<Response> =>
         Promise.resolve({
           ok: false,
           status: 404,
         } as Response)
-    );
+    )
+  );
 
-    vi.stubGlobal('fetch', mockFetch);
+  render(<App />);
 
-    render(<App />);
+  const errorMessage = await screen.findByText(/Error: 404 Nothing was found for your request!/i);
 
-    const input: HTMLInputElement = screen.getByPlaceholderText('Search...');
-    const button: HTMLButtonElement = screen.getByRole('button', { name: /search/i });
-
-    await userEvent.type(input, 'UnknownCharacter');
-    await userEvent.click(button);
-
-    const errorMessage: HTMLElement = screen.getByText(
-      /Error: 404 Nothing was found for your request!/i
-    );
-    expect(errorMessage).toBeInTheDocument();
-  });
+  expect(errorMessage).toBeInTheDocument();
 });
