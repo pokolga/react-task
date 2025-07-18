@@ -11,12 +11,19 @@ describe('App with ErrorButton and ErrorBoundary', () => {
   it('shows fallback UI when ErrorButton throws', async () => {
     render(<App />);
 
-    const button = screen.getByRole('button', { name: /Click to trigger error/i });
-
+    const button: HTMLButtonElement = screen.getByRole('button', {
+      name: /Click to trigger error/i,
+    });
     await userEvent.click(button);
 
-    expect(screen.getByText('Something went wrong...')).toBeInTheDocument();
-    expect(screen.getByText('The test Error button was clicked!')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Try again!/ })).toBeInTheDocument();
+    const fallbackText: HTMLElement = screen.getByText('Something went wrong...');
+    const errorMessage: HTMLElement = screen.getByText('The test Error button was clicked!');
+    const tryAgainButton: HTMLButtonElement = screen.getByRole('button', {
+      name: /Try again!/i,
+    });
+
+    expect(fallbackText).toBeInTheDocument();
+    expect(errorMessage).toBeInTheDocument();
+    expect(tryAgainButton).toBeInTheDocument();
   });
 });

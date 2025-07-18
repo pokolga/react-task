@@ -15,12 +15,14 @@ describe('Card', () => {
   it('renders character info correctly', () => {
     render(<Card character={mockCharacter} />);
 
-    const img = screen.getByRole('img');
+    const img: HTMLImageElement = screen.getByRole('img');
     expect(img).toHaveAttribute('src', mockCharacter.image);
     expect(img).toHaveAttribute('alt', mockCharacter.name);
 
-    expect(screen.getByText(mockCharacter.name)).toBeInTheDocument();
+    const nameText: HTMLElement = screen.getByText(mockCharacter.name);
+    expect(nameText).toBeInTheDocument();
 
-    expect(screen.getByText(/Human — Alive/)).toBeInTheDocument();
+    const speciesStatusText: HTMLElement = screen.getByText(/Human — Alive/);
+    expect(speciesStatusText).toBeInTheDocument();
   });
 });

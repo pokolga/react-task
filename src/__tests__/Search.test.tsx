@@ -1,73 +1,83 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Search from '../components/search';
-import { beforeEach, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+type SearchCallback = (query: string) => Promise<void>;
 
 beforeEach(() => {
   localStorage.clear();
   vi.restoreAllMocks();
 });
 
-it('Rendering Test: renders input and button', () => {
-  render(<Search onSearch={vi.fn()} />);
-  expect(screen.getByPlaceholderText('Search...')).toBeInTheDocument();
-  expect(screen.getByRole('button', { name: /search/i })).toBeInTheDocument();
-});
+describe('Search Component', () => {
+  it('renders input and button', () => {
+    const mockSearch: SearchCallback = vi.fn();
+    render(<Search onSearch={mockSearch} />);
 
-it('Rendering Test: displays saved search from localStorage', async () => {
-  localStorage.setItem('query', 'Rick');
-  render(<Search onSearch={vi.fn()} />);
-  const input = await screen.findByDisplayValue('Rick');
-  expect(input).toBeInTheDocument();
-});
+    const input = screen.getByPlaceholderText('Search...');
+    const button = screen.getByRole('button', { name: /search/i });
 
-it('Rendering Test: shows empty input when no saved term exists', () => {
-  render(<Search onSearch={vi.fn()} />);
-  expect(screen.getByPlaceholderText('Search...')).toHaveValue('');
-});
+    expect(input).toBeInTheDocument();
+    expect(button).toBeInTheDocument();
+  });
 
-it('User Interaction Test: updates input value when user types', async () => {
-  render(<Search onSearch={vi.fn()} />);
-  const input = screen.getByPlaceholderText('Search...');
+  it('displays saved search from localStorage', async () => {
+    localStorage.setItem('query', 'Rick');
+    const mockSearch: SearchCallback = vi.fn();
+    render(<Search onSearch={mockSearch} />);
 
-  await userEvent.type(input, 'Morty');
+    const input = await screen.findByDisplayValue('Rick');
+    expect(input).toBeInTheDocument();
+  });
 
-  expect(input).toHaveValue('Morty');
-});
+  it('shows empty input when no saved term exists', () => {
+    const mockSearch: SearchCallback = vi.fn();
+    render(<Search onSearch={mockSearch} />);
 
-it('User Interaction Test: triggers search callback with correct parameters', async () => {
-  const onSearchMock = vi.fn();
-  render(<Search onSearch={onSearchMock} />);
+    const input = screen.getByPlaceholderText('Search...');
+    expect(input).toHaveValue('');
+  });
 
-  const input = screen.getByPlaceholderText('Search...');
-  const button = screen.getByRole('button', { name: /search/i });
+  it('updates input value when user types', async () => {
+    const mockSearch: SearchCallback = vi.fn();
+    render(<Search onSearch={mockSearch} />);
 
-  await userEvent.type(input, 'Morty');
-  await userEvent.click(button);
+    const input = screen.getByPlaceholderText('Search...');
+    await userEvent.type(input, 'Morty');
 
-  expect(onSearchMock).toHaveBeenCalledWith('Morty');
-});
+    expect(input).toHaveValue('Morty');
+  });
 
-it('LocalStorage Integration: retrieves saved search term on component mount', async () => {
-  const onSearchMock = vi.fn();
-  render(<Search onSearch={onSearchMock} />);
+  it('triggers search callback with correct parameters on button click', async () => {
+    const onSearchMock: SearchCallback = vi.fn();
+    render(<Search onSearch={onSearchMock} />);
 
-  const input = screen.getByPlaceholderText('Search...');
-  const button = screen.getByRole('button', { name: /search/i });
+    const input = screen.getByPlaceholderText('Search...');
+    const button = screen.getByRole('button', { name: /search/i });
 
-  await userEvent.type(input, 'Morty');
-  await userEvent.click(button);
+    await userEvent.type(input, 'Morty');
+    await userEvent.click(button);
 
-  expect(onSearchMock).toHaveBeenCalledWith('Morty');
-});
+    expect(onSearchMock).toHaveBeenCalledWith('Morty');
+  });
 
-it('calls onSearch when Enter key is pressed in input field', async () => {
-  const onSearchMock = vi.fn();
+  it('retrieves saved search term on component mount', async () => {
+    localStorage.setItem('query', 'Morty');
+    const onSearchMock: SearchCallback = vi.fn();
+    render(<Search onSearch={onSearchMock} />);
 
-  render(<Search onSearch={onSearchMock} />);
-  const input = screen.getByPlaceholderText('Search...');
+    const input = screen.getByDisplayValue('Morty');
+    expect(input).toBeInTheDocument();
+  });
 
-  await userEvent.type(input, 'Morty{enter}');
+  it('calls onSearch when Enter key is pressed in input field', async () => {
+    const onSearchMock: SearchCallback = vi.fn();
+    render(<Search onSearch={onSearchMock} />);
 
-  expect(onSearchMock).toHaveBeenCalledWith('Morty');
+    const input = screen.getByPlaceholderText('Search...');
+    await userEvent.type(input, 'Morty{enter}');
+
+    expect(onSearchMock).toHaveBeenCalledWith('Morty');
+  });
 });

@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { CardsList } from '../components/cardsList';
 import { describe, expect, it } from 'vitest';
+import type { Character } from '../models/types';
 
-const mockCharacters = [
+const mockCharacters: Character[] = [
   {
     id: 1,
     name: 'Rick Sanchez',
@@ -23,16 +24,22 @@ describe('CardsList', () => {
   it('renders a list of character cards', () => {
     render(<CardsList results={mockCharacters} />);
 
-    expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
-    expect(screen.getByText('Morty Smith')).toBeInTheDocument();
+    const rickText: HTMLElement = screen.getByText('Rick Sanchez');
+    const mortyText: HTMLElement = screen.getByText('Morty Smith');
 
-    expect(screen.getByAltText('Rick Sanchez')).toHaveAttribute('src', mockCharacters[0].image);
-    expect(screen.getByAltText('Morty Smith')).toHaveAttribute('src', mockCharacters[1].image);
+    const rickImg: HTMLImageElement = screen.getByAltText('Rick Sanchez');
+    const mortyImg: HTMLImageElement = screen.getByAltText('Morty Smith');
+
+    expect(rickText).toBeInTheDocument();
+    expect(mortyText).toBeInTheDocument();
+
+    expect(rickImg).toHaveAttribute('src', mockCharacters[0].image);
+    expect(mortyImg).toHaveAttribute('src', mockCharacters[1].image);
   });
 
-  it('Renders correct number of items', () => {
+  it('renders correct number of items', () => {
     render(<CardsList results={mockCharacters} />);
-    const cards = screen.getAllByRole('img');
+    const cards: HTMLImageElement[] = screen.getAllByRole('img');
     expect(cards).toHaveLength(2);
   });
 });
