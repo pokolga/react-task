@@ -10,9 +10,10 @@
     "format:fix": "prettier --write .",
     "preview": "vite preview",
     "prepare": "husky",
+    "pre-commit": "npm run lint && npm run test",
     "deploy": "npm run build && npx gh-pages -d dist -e react-task",
     "test": "vitest --config vitest.config.ts",
-    "coverage": "vitest run --coverage --config vitest.config.ts"
+    "test:coverage": "vitest run --coverage --config vitest.config.ts"
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.1.11",
