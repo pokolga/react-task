@@ -13,7 +13,7 @@ interface AppState {
   error?: string;
 }
 
-class App extends React.Component<unknown, AppState> {
+export default class App extends React.Component<unknown, AppState> {
   constructor(props: unknown) {
     super(props);
     this.state = { results: [], loading: false, error: undefined };
@@ -41,9 +41,9 @@ class App extends React.Component<unknown, AppState> {
   render(): React.ReactNode {
     return (
       <>
-        <h1 className="text-2xl font-bold text-blue-600 text-center my-4">Characters Rick&Morty</h1>
+        <h1 className="my-4 text-center text-2xl font-bold text-blue-600">Characters Rick&Morty</h1>
         <ErrorBoundary
-          fallback={<p className="text-2xl font-bold text-red">Something went wrong...</p>}
+          fallback={<p className="text-red text-2xl font-bold">Something went wrong...</p>}
         >
           <Search onSearch={this.whenSearch} />
 
@@ -58,5 +58,3 @@ class App extends React.Component<unknown, AppState> {
     );
   }
 }
-
-export default App;

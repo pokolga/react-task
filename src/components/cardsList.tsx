@@ -9,7 +9,7 @@ interface ListProps {
 export class CardsList extends React.Component<ListProps> {
   render(): ReactNode {
     return (
-      <div className="flex flex-wrap gap-4 justify-center">
+      <div className="flex flex-wrap justify-center gap-4">
         {this.props.results.map((char) => (
           <Card key={char.id} character={char} />
         ))}

@@ -17,12 +17,13 @@ export default class Search extends React.Component<Props, SearchState> {
   }
 
   componentDidMount() {
-    const initialValue = localStorage.getItem('query');
-    if (initialValue !== null) {
-      this.setState({ query: initialValue }, () => {
-        this.searchClick();
-      });
+    let initialValue = localStorage.getItem('query');
+    if (initialValue === null) {
+      initialValue = '';
     }
+    this.setState({ query: initialValue }, () => {
+      this.searchClick();
+    });
   }
 
   searchClick = () => {
@@ -41,19 +42,19 @@ export default class Search extends React.Component<Props, SearchState> {
 
   render(): React.ReactNode {
     return (
-      <fieldset className="border border-blue-800 border-solid flex gap-2 m-2 p-2 rounded-xs">
-        <legend className="text-xs text-blue-800 mb-2">Search</legend>
+      <fieldset className="m-2 flex gap-2 rounded-xs border border-solid border-blue-800 p-2">
+        <legend className="mb-2 text-xs text-blue-800">Search</legend>
         <input
           type="text"
           value={this.state.query}
           onChange={this.inputChange}
           onKeyDown={this.handleKeyDown}
           placeholder="Search..."
-          className="border border-gray-600 bg-white px-4 py-2 rounded w-[90%]"
+          className="w-[90%] rounded border border-gray-600 bg-white px-4 py-2"
         />
         <button
           onClick={this.searchClick}
-          className="bg-blue-800  border-none text-white px-4 py-2 rounded hover:bg-blue-600 hover:cursor-pointer"
+          className="rounded border-none bg-blue-800 px-4 py-2 text-white hover:cursor-pointer hover:bg-blue-600"
         >
           Search
         </button>

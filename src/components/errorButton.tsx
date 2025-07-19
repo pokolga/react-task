@@ -20,7 +20,7 @@ export default class ErrorButton extends React.Component<unknown, ErrorButtonSta
 
     return (
       <button
-        className="bg-blue-800 border-none text-white px-4 py-2 m-2 rounded hover:bg-blue-600 hover:cursor-pointer"
+        className="m-2 rounded border-none bg-blue-800 px-4 py-2 text-white hover:cursor-pointer hover:bg-blue-600"
         onClick={this.handleClick}
       >
         Click to trigger error

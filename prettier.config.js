@@ -8,4 +8,5 @@ export default {
   jsxSingleQuote: false,
   arrowParens: 'always',
   endOfLine: 'auto',
+  plugins: ['prettier-plugin-tailwindcss'],
 };

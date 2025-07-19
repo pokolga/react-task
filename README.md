@@ -95,6 +95,27 @@ To enhance your development experience with Tailwind CSS, install the following 
 
 This extension provides autocomplete suggestions, linting, hover previews
 
+7. **Vitest**
+
+```bash
+npm install --save-dev vitest jsdom @testing-library/react @testing-library/jest-dom
+```
+
+## Testing Rules
+
+Follow these guidelines for writing tests:
+
+- Use **BDD (Behavior-Driven Development)** style with `describe` and `test`
+- Group related tests under `describe` blocks
+- Write test descriptions that read like technical specifications:
+  ```typescript
+  describe('App component', () => {
+    test('renders headline', () => {
+      // test code
+    });
+  });
+  ```
+
 ## 📜 Scripts
 
 Use the following scripts to assist with development, formatting, linting, building, and deploying.
