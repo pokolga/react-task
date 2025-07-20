@@ -24,12 +24,12 @@ export default class ErrorBoundary extends React.Component<ErrorProps, ErrorStat
   render(): ReactNode {
     if (this.state.hasError) {
       return (
-        <div className="p-4 bg-red-100 text-red-800 rounded">
-          <h2 className="text-lg font-bold mb-2">Something went wrong...</h2>
-          <pre className="text-sm mb-4">{this.state.error?.message}</pre>
+        <div className="rounded bg-red-100 p-4 text-red-800">
+          <h2 className="mb-2 text-lg font-bold">Something went wrong...</h2>
+          <pre className="mb-4 text-sm">{this.state.error?.message}</pre>
           <button
             onClick={this.tryAgain}
-            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-500"
+            className="rounded bg-red-600 px-4 py-2 text-white hover:bg-red-500"
           >
             Try again!
           </button>

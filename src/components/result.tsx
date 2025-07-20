@@ -22,18 +22,21 @@ export default class Result extends React.Component<ResultType, ResultState> {
   render(): React.ReactNode {
     const { results, error, loading } = this.props;
     return (
-      <fieldset className="border relative border-blue-800 border-solid flex gap-2 m-2 p-2 rounded-xs">
-        <legend className="text-xs text-blue-800 mb-2">Results</legend>
+      <fieldset className="relative m-2 flex gap-2 rounded-xs border border-solid border-blue-800 p-2">
+        <legend className="mb-2 text-xs text-blue-800">Results</legend>
         {error && (
-          <div className="text-red-600 text-sm px-2 py-1 border border-red-400 rounded bg-red-50">
+          <div className="rounded border border-red-400 bg-red-50 px-2 py-1 text-sm text-red-600">
             {error}
           </div>
         )}
 
         {results.length > 0 && !error && <CardsList results={results} />}
         {loading && (
-          <div className="fixed inset-0 z-2 text-xl px-2 py-1 bg-gray-700/90 flex justify-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-4 border-white border-t-transparent place-self-center"></div>
+          <div className="fixed inset-0 z-2 flex justify-center bg-gray-700/90 px-2 py-1 text-xl">
+            <div
+              className="h-8 w-8 animate-spin place-self-center rounded-full border-4 border-white border-t-transparent"
+              data-testid="spinner"
+            ></div>
           </div>
         )}
       </fieldset>
