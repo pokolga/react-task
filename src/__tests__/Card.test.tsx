@@ -25,4 +25,18 @@ describe('Card', () => {
     const speciesStatusText: HTMLElement = screen.getByText(/Human — Alive/);
     expect(speciesStatusText).toBeInTheDocument();
   });
+
+  const incompleteCharacter = {
+    id: 1,
+    name: '',
+    image: 'abracadabra',
+    species: 'Human',
+    status: 'Alive',
+  };
+  it('handles missing props gracefully', () => {
+    render(<Card character={incompleteCharacter} />);
+
+    const img: HTMLImageElement = screen.getByAltText('');
+    expect(img).toHaveAttribute('src', 'abracadabra');
+  });
 });
