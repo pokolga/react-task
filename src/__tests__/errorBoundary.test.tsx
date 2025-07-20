@@ -9,6 +9,7 @@ describe('App with ErrorButton and ErrorBoundary', () => {
   });
 
   it('shows fallback UI when ErrorButton throws', async () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     render(<App />);
 
     const button: HTMLButtonElement = screen.getByRole('button', {
@@ -25,5 +26,7 @@ describe('App with ErrorButton and ErrorBoundary', () => {
     expect(fallbackText).toBeInTheDocument();
     expect(errorMessage).toBeInTheDocument();
     expect(tryAgainButton).toBeInTheDocument();
+
+    expect(errorSpy).toHaveBeenCalled();
   });
 });
