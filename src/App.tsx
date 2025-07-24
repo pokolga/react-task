@@ -14,9 +14,16 @@ interface AppState {
 }
 
 export default class App extends React.Component<unknown, AppState> {
+  timeoutId: ReturnType<typeof setTimeout> | null = null;
   constructor(props: unknown) {
     super(props);
     this.state = { results: [], loading: false, error: undefined };
+  }
+
+  componentWillUnmount() {
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+    }
   }
 
   whenSearch = async (query: string) => {
@@ -32,7 +39,7 @@ export default class App extends React.Component<unknown, AppState> {
       }
       this.setState({ results: [], error: `${error} ${errorMessage}!` });
     } finally {
-      setTimeout(() => {
+      this.timeoutId = setTimeout(() => {
         this.setState({ loading: false });
       }, spinnerDelay);
     }
