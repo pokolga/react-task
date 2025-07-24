@@ -5,7 +5,6 @@ import type { Character } from './models/types';
 import { getData } from './services/fetch';
 import { spinnerDelay } from './models/constants';
 import ErrorBoundary from './components/errorBoundary';
-import ErrorButton from './components/errorButton';
 
 interface AppState {
   results: Character[];
@@ -59,7 +58,6 @@ export default class App extends React.Component<unknown, AppState> {
             error={this.state.error}
             loading={this.state.loading}
           />
-          <ErrorButton />
         </ErrorBoundary>
       </>
     );
