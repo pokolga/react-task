@@ -6,14 +6,12 @@ interface ListProps {
   results: Character[];
 }
 
-export class CardsList extends React.Component<ListProps> {
-  render(): ReactNode {
-    return (
-      <div className="flex flex-wrap justify-center gap-4">
-        {this.props.results.map((char) => (
-          <Card key={char.id} character={char} />
-        ))}
-      </div>
-    );
-  }
-}
+export const CardsList: React.FC<ListProps> = ({ results }): ReactNode => {
+  return (
+    <div className="flex flex-wrap justify-center gap-4">
+      {results.map((char) => (
+        <Card key={char.id} character={char} />
+      ))}
+    </div>
+  );
+};
