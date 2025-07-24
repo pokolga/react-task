@@ -1,64 +1,54 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 type Props = {
   onSearch: (query: string) => Promise<void>;
 };
 
-interface SearchState {
-  query: string;
-}
+const Search: React.FC<Props> = ({ onSearch }) => {
+  const [query, setQuery] = useState('');
 
-export default class Search extends React.Component<Props, SearchState> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      query: '',
-    };
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     let initialValue = localStorage.getItem('query');
     if (initialValue === null) {
       initialValue = '';
     }
-    this.setState({ query: initialValue }, () => {
-      this.searchClick();
-    });
-  }
+    setQuery(initialValue);
+    onSearch(initialValue);
+  }, [onSearch]);
 
-  searchClick = () => {
-    this.props.onSearch(this.state.query);
+  const inputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
   };
 
-  inputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ query: event.target.value });
-  };
-
-  handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      this.searchClick();
+      onSearch(query);
     }
   };
 
-  render(): React.ReactNode {
-    return (
-      <fieldset className="m-2 flex gap-2 rounded-xs border border-solid border-blue-800 p-2">
-        <legend className="mb-2 text-xs text-blue-800">Search</legend>
-        <input
-          type="text"
-          value={this.state.query}
-          onChange={this.inputChange}
-          onKeyDown={this.handleKeyDown}
-          placeholder="Search..."
-          className="w-[90%] rounded border border-gray-600 bg-white px-4 py-2"
-        />
-        <button
-          onClick={this.searchClick}
-          className="rounded border-none bg-blue-800 px-4 py-2 text-white hover:cursor-pointer hover:bg-blue-600"
-        >
-          Search
-        </button>
-      </fieldset>
-    );
-  }
-}
+  const searchClick = () => {
+    onSearch(query);
+  };
+
+  return (
+    <fieldset className="m-2 flex gap-2 rounded-xs border border-solid border-blue-800 p-2">
+      <legend className="mb-2 text-xs text-blue-800">Search</legend>
+      <input
+        type="text"
+        value={query}
+        onChange={inputChange}
+        onKeyDown={handleKeyDown}
+        placeholder="Search..."
+        className="w-[90%] rounded border border-gray-600 bg-white px-4 py-2"
+      />
+      <button
+        onClick={searchClick}
+        className="rounded border-none bg-blue-800 px-4 py-2 text-white hover:cursor-pointer hover:bg-blue-600"
+      >
+        Search
+      </button>
+    </fieldset>
+  );
+};
+
+export default Search;
