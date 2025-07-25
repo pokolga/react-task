@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Result from './components/result';
 import Search from './components/search';
-import type { Character } from './models/types';
+import type { Character, InfoItem } from './models/types';
 import { getData } from './services/fetch';
 import { spinnerDelay } from './models/constants';
 import ErrorBoundary from './components/errorBoundary';
@@ -12,6 +12,7 @@ const App: React.FC = () => {
   const [error, setError] = useState<string | undefined>();
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState('');
+  const [info, setInfo] = useState<{ next: InfoItem; prev: InfoItem } | null>(null);
 
   const timeoutId = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -33,7 +34,8 @@ const App: React.FC = () => {
 
     try {
       const data = await getData(trimmedQuery, pageNum);
-      setResults(data);
+      setResults(data.results);
+      setInfo(data.info);
     } catch (error) {
       let errorMessage = '';
       if (error && /404/.test(String(error))) {
@@ -58,18 +60,19 @@ const App: React.FC = () => {
       >
         <Search onSearch={whenSearch} />
         <Result results={results} error={error} loading={loading} />
-        {results.length > 0 && (
+        {results.length > 0 && info && (
           <div className="my-4 flex justify-center gap-4">
             <button
-              disabled={page <= 1}
+              disabled={!info.prev}
               onClick={() => whenSearch(query, page - 1)}
-              className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+              className="rounded bg-blue-500 px-4 py-2 text-white disabled:cursor-not-allowed disabled:bg-gray-300"
             >
-              Prev
+              Previous
             </button>
             <button
+              disabled={!info.next}
               onClick={() => whenSearch(query, page + 1)}
-              className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+              className="rounded bg-blue-500 px-4 py-2 text-white disabled:cursor-not-allowed disabled:bg-gray-300"
             >
               Next
             </button>

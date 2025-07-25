@@ -17,3 +17,17 @@ export interface Character {
   type?: string;
   url?: string;
 }
+
+export type InfoItem = string | null;
+
+export interface Info {
+  count: number;
+  pages: number;
+  next: InfoItem;
+  prev: InfoItem;
+}
+
+export interface ApiResponse {
+  info: Info;
+  results: Character[];
+}
