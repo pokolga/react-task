@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
-import App from '../App';
+import Home from './../pages/home';
 import { describe, expect, it, beforeEach, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import type { Character } from '../models/types';
 
-describe('App', () => {
+describe('Home', () => {
   it('renders headline', () => {
-    render(<App />);
+    render(<Home />);
     const headline: HTMLElement = screen.getByText(/Characters Rick&Morty/i);
     expect(headline).toBeInTheDocument();
   });
@@ -29,7 +29,7 @@ describe('For Search component', () => {
 
     vi.stubGlobal('fetch', mockFetch);
 
-    render(<App />);
+    render(<Home />);
 
     const input: HTMLInputElement = screen.getByPlaceholderText('Search...');
     const button: HTMLButtonElement = screen.getByRole('button', { name: /search/i });
@@ -58,7 +58,7 @@ describe('For Search component', () => {
 
     vi.stubGlobal('fetch', mockFetch);
 
-    render(<App />);
+    render(<Home />);
 
     const input: HTMLInputElement = screen.getByPlaceholderText('Search...');
     const button: HTMLButtonElement = screen.getByRole('button', { name: /search/i });
@@ -84,7 +84,7 @@ it('Displays 404 error message when no results found', async () => {
     )
   );
 
-  render(<App />);
+  render(<Home />);
 
   const errorMessage = await screen.findByText(/Error: 404 Nothing was found for your request!/i);
 
