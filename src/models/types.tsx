@@ -12,8 +12,8 @@ export interface Character {
   created?: string;
   episode?: string[];
   gender?: string;
-  location?: Location[];
-  origin?: Location[];
+  location?: Location;
+  origin?: Location;
   type?: string;
   url?: string;
 }

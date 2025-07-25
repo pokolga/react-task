@@ -4,13 +4,14 @@ import { Card } from './card';
 
 interface ListProps {
   results: Character[];
+  onSelectCard: (char: Character) => void;
 }
 
-export const CardsList: React.FC<ListProps> = ({ results }): ReactNode => {
+export const CardsList: React.FC<ListProps> = ({ results, onSelectCard }): ReactNode => {
   return (
     <div className="flex flex-wrap justify-center gap-4">
       {results.map((char) => (
-        <Card key={char.id} character={char} />
+        <Card key={char.id} character={char} onSelect={() => onSelectCard(char)} />
       ))}
     </div>
   );

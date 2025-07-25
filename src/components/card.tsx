@@ -3,11 +3,12 @@ import type { Character } from '../models/types';
 
 interface CardProps {
   character: Character;
+  onSelect: () => void;
 }
 
-export const Card: React.FC<CardProps> = ({ character }): React.ReactNode => {
+export const Card: React.FC<CardProps> = ({ character, onSelect }): React.ReactNode => {
   return (
-    <div className="w-64 rounded bg-white p-4 shadow hover:shadow-xl">
+    <div onClick={onSelect} className="w-64 rounded bg-white p-4 shadow hover:shadow-xl">
       <img
         src={character.image}
         alt={character.name}
