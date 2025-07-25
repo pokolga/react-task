@@ -10,6 +10,8 @@ const App: React.FC = () => {
   const [results, setResults] = useState<Character[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
+  const [page, setPage] = useState(1);
+  const [query, setQuery] = useState('');
 
   const timeoutId = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -21,14 +23,16 @@ const App: React.FC = () => {
     };
   }, []);
 
-  const whenSearch = useCallback(async (query: string) => {
+  const whenSearch = useCallback(async (query: string, pageNum = 1) => {
     const trimmedQuery = query.trim();
+    setQuery(trimmedQuery);
     localStorage.setItem('query', trimmedQuery);
     setLoading(true);
     setError(undefined);
+    setPage(pageNum);
 
     try {
-      const data = await getData(trimmedQuery);
+      const data = await getData(trimmedQuery, pageNum);
       setResults(data);
     } catch (error) {
       let errorMessage = '';
@@ -54,6 +58,23 @@ const App: React.FC = () => {
       >
         <Search onSearch={whenSearch} />
         <Result results={results} error={error} loading={loading} />
+        {results.length > 0 && (
+          <div className="my-4 flex justify-center gap-4">
+            <button
+              disabled={page <= 1}
+              onClick={() => whenSearch(query, page - 1)}
+              className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+            >
+              Prev
+            </button>
+            <button
+              onClick={() => whenSearch(query, page + 1)}
+              className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </ErrorBoundary>
     </>
   );
