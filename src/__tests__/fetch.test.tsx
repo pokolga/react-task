@@ -10,12 +10,21 @@ it('fetch succeeds', async () => {
     'fetch',
     vi.fn().mockResolvedValue({
       ok: true,
-      json: async () => ({ results: 'Rick Sanchez' }),
+      json: async () => ({
+        info: {
+          count: 1,
+          pages: 1,
+          next: null,
+          prev: null,
+        },
+        results: [{ name: 'Rick Sanchez' }],
+      }),
     })
   );
 
-  const result = await getData('https://api.example.com');
-  expect(result).toBe('Rick Sanchez');
+  const result = await getData('Rick');
+  expect(result.results[0].name).toBe('Rick Sanchez');
+  expect(result.info.next).toBeNull();
 });
 
 it('fetch fails: 404', async () => {
