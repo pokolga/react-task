@@ -5,7 +5,7 @@ import type { CharacterType, InfoItem } from './../models/types';
 import { getData } from './../services/fetch';
 import { spinnerDelay } from './../models/constants';
 import ErrorBoundary from './../components/errorBoundary';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 const Home: React.FC = () => {
   const [results, setResults] = useState<CharacterType[]>([]);
@@ -14,6 +14,7 @@ const Home: React.FC = () => {
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState('');
   const [info, setInfo] = useState<{ next: InfoItem; prev: InfoItem } | null>(null);
+  const navigate = useNavigate();
 
   const timeoutId = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -52,7 +53,7 @@ const Home: React.FC = () => {
   }, []);
 
   return (
-    <>
+    <main onClick={() => navigate('/')}>
       <h1 className="my-4 text-center text-2xl font-bold text-blue-600">
         Characters Rick&amp;Morty
       </h1>
@@ -87,7 +88,7 @@ const Home: React.FC = () => {
           </div>
         </div>
       </ErrorBoundary>
-    </>
+    </main>
   );
 };
 
