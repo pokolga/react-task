@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { CardsList } from '../components/cardsList';
 import { describe, expect, it } from 'vitest';
 import type { CharacterType } from '../models/types';
+import { MemoryRouter } from 'react-router-dom';
 
 const mockCharacters: CharacterType[] = [
   {
@@ -22,7 +23,11 @@ const mockCharacters: CharacterType[] = [
 
 describe('CardsList', () => {
   it('renders a list of character cards', () => {
-    render(<CardsList results={mockCharacters} />);
+    render(
+      <MemoryRouter>
+        <CardsList results={mockCharacters} />
+      </MemoryRouter>
+    );
 
     const rickText: HTMLElement = screen.getByText('Rick Sanchez');
     const mortyText: HTMLElement = screen.getByText('Morty Smith');
@@ -38,7 +43,11 @@ describe('CardsList', () => {
   });
 
   it('renders correct number of items', () => {
-    render(<CardsList results={mockCharacters} />);
+    render(
+      <MemoryRouter>
+        <CardsList results={mockCharacters} />
+      </MemoryRouter>
+    );
     const cards: HTMLImageElement[] = screen.getAllByRole('img');
     expect(cards).toHaveLength(2);
   });
