@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import { Card } from '../components/card';
 import { describe, expect, it } from 'vitest';
-import type { Character } from '../models/types';
+import type { CharacterType } from '../models/types';
 
 describe('Card', () => {
-  const mockCharacter: Character = {
+  const mockCharacter: CharacterType = {
     id: 1,
     name: 'Rick Sanchez',
     image: 'https://rickandmortyapi.com/rick.png',
@@ -13,7 +13,7 @@ describe('Card', () => {
   };
 
   it('renders character info correctly', () => {
-    render(<Card character={mockCharacter} />);
+    render(<Card character={mockCharacter} onSelect={() => {}} />);
 
     const img: HTMLImageElement = screen.getByRole('img');
     expect(img).toHaveAttribute('src', mockCharacter.image);
@@ -35,7 +35,7 @@ describe('Card', () => {
   };
 
   it('handles missing props gracefully', () => {
-    render(<Card character={incompleteCharacter} />);
+    render(<Card character={incompleteCharacter} onSelect={() => {}} />);
     const img: HTMLImageElement = screen.getByAltText('');
     expect(img).toHaveAttribute('src', 'abracadabra');
   });

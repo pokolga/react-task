@@ -3,7 +3,7 @@ type Location = {
   url: string;
 };
 
-export interface Character {
+export interface CharacterType {
   id: number;
   name: string;
   status: string;
@@ -29,5 +29,5 @@ export interface Info {
 
 export interface ApiResponse {
   info: Info;
-  results: Character[];
+  results: CharacterType[];
 }

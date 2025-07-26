@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import Home from './../pages/home';
 import { describe, expect, it, beforeEach, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
-import type { Character } from '../models/types';
+import type { CharacterType } from '../models/types';
 
 describe('Home', () => {
   it('renders headline', () => {
@@ -23,7 +23,7 @@ describe('For Search component', () => {
       (): Promise<Response> =>
         Promise.resolve({
           ok: true,
-          json: async (): Promise<{ results: Character[] }> => ({ results: [] }),
+          json: async (): Promise<{ results: CharacterType[] }> => ({ results: [] }),
         } as Response)
     );
 
@@ -52,7 +52,7 @@ describe('For Search component', () => {
       (): Promise<Response> =>
         Promise.resolve({
           ok: true,
-          json: async (): Promise<{ results: Character[] }> => ({ results: [] }),
+          json: async (): Promise<{ results: CharacterType[] }> => ({ results: [] }),
         } as Response)
     );
 

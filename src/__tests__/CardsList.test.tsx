@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { CardsList } from '../components/cardsList';
 import { describe, expect, it } from 'vitest';
-import type { Character } from '../models/types';
+import type { CharacterType } from '../models/types';
 
-const mockCharacters: Character[] = [
+const mockCharacters: CharacterType[] = [
   {
     id: 1,
     name: 'Rick Sanchez',

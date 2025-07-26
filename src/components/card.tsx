@@ -1,8 +1,8 @@
 import React from 'react';
-import type { Character } from '../models/types';
+import type { CharacterType } from '../models/types';
 
 interface CardProps {
-  character: Character;
+  character: CharacterType;
   onSelect: () => void;
 }
 
