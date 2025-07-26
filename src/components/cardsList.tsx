@@ -1,10 +1,10 @@
 import React, { type ReactNode } from 'react';
-import type { Character } from '../models/types';
+import type { CharacterType } from '../models/types';
 import { Card } from './card';
 import { useNavigate } from 'react-router-dom';
 
 interface ListProps {
-  results: Character[];
+  results: CharacterType[];
 }
 
 export const CardsList: React.FC<ListProps> = ({ results }): ReactNode => {

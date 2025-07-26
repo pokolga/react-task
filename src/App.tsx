@@ -7,8 +7,14 @@ import Character from './pages/character';
 function App() {
   return (
     <BrowserRouter>
-      <nav className="text-red m-4">
-        <Link to="/">Home</Link> ● <Link to="/about">About me</Link>
+      <nav className="border-b-solid m-8 border-b-2 border-b-blue-500 p-2 text-blue-500">
+        <Link to="/" className="m-4 p-1 hover:bg-white">
+          Home
+        </Link>{' '}
+        ●{' '}
+        <Link to="/about" className="m-4 p-1 hover:bg-white">
+          About me
+        </Link>
       </nav>
 
       <Routes>

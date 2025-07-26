@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Result from './../components/result';
 import Search from './../components/search';
-import type { Character, InfoItem } from './../models/types';
+import type { CharacterType, InfoItem } from './../models/types';
 import { getData } from './../services/fetch';
 import { spinnerDelay } from './../models/constants';
 import ErrorBoundary from './../components/errorBoundary';
 import { Outlet } from 'react-router-dom';
 
 const Home: React.FC = () => {
-  const [results, setResults] = useState<Character[]>([]);
+  const [results, setResults] = useState<CharacterType[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
   const [page, setPage] = useState(1);
@@ -60,7 +60,7 @@ const Home: React.FC = () => {
         fallback={<p className="text-red text-2xl font-bold">Something went wrong...</p>}
       >
         <div className="flex h-screen">
-          <div className="w-2/3 overflow-y-auto p-6">
+          <div className="w-3/4 overflow-y-auto p-6">
             <Search onSearch={whenSearch} />
             <Result results={results} error={error} loading={loading} />
             {results.length > 0 && info && (
@@ -68,21 +68,21 @@ const Home: React.FC = () => {
                 <button
                   disabled={!info.prev}
                   onClick={() => whenSearch(query, page - 1)}
-                  className="rounded bg-blue-500 px-4 py-2 text-white disabled:cursor-not-allowed disabled:bg-gray-300"
+                  className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-300 disabled:cursor-not-allowed disabled:bg-gray-300"
                 >
                   Previous
                 </button>
                 <button
                   disabled={!info.next}
                   onClick={() => whenSearch(query, page + 1)}
-                  className="rounded bg-blue-500 px-4 py-2 text-white disabled:cursor-not-allowed disabled:bg-gray-300"
+                  className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-300 disabled:cursor-not-allowed disabled:bg-gray-300"
                 >
                   Next
                 </button>
               </div>
             )}
           </div>
-          <div className="w-1/3 bg-white p-8">
+          <div className="w-1/4 bg-white p-8">
             <Outlet />
           </div>
         </div>
