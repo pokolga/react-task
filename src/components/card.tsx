@@ -6,7 +6,7 @@ interface CardProps {
   onSelect: () => void;
 }
 
-export const Card: React.FC<CardProps> = ({ character, onSelect }): React.ReactNode => {
+export const Card: React.FC<CardProps> = ({ character, onSelect }) => {
   return (
     <div onClick={onSelect} className="w-64 rounded bg-white p-4 shadow hover:shadow-xl">
       <img

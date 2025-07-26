@@ -5,6 +5,7 @@ import type { Character, InfoItem } from './../models/types';
 import { getData } from './../services/fetch';
 import { spinnerDelay } from './../models/constants';
 import ErrorBoundary from './../components/errorBoundary';
+import { Outlet } from 'react-router-dom';
 
 const Home: React.FC = () => {
   const [results, setResults] = useState<Character[]>([]);
@@ -13,7 +14,6 @@ const Home: React.FC = () => {
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState('');
   const [info, setInfo] = useState<{ next: InfoItem; prev: InfoItem } | null>(null);
-  const [selected, setSelected] = useState<Character | null>(null);
 
   const timeoutId = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -62,7 +62,7 @@ const Home: React.FC = () => {
         <div className="flex h-screen">
           <div className="w-2/3 overflow-y-auto p-6">
             <Search onSearch={whenSearch} />
-            <Result results={results} error={error} loading={loading} onSelectCard={setSelected} />
+            <Result results={results} error={error} loading={loading} />
             {results.length > 0 && info && (
               <div className="my-4 flex justify-center gap-4">
                 <button
@@ -82,38 +82,9 @@ const Home: React.FC = () => {
               </div>
             )}
           </div>
-
-          {selected && (
-            <div className="w-1/3 bg-white p-8">
-              <button
-                onClick={() => setSelected(null)}
-                className="mb-4 text-blue-500 hover:underline"
-              >
-                ← Закрыть
-              </button>
-              <div className="flex flex-col gap-6 xl:flex-row">
-                <img src={selected.image} alt={selected.name} className="w-48 rounded" />
-                <div>
-                  <h2 className="text-2xl font-bold">{selected.name}</h2>
-                  <p>
-                    <strong>Status:</strong> {selected.status}
-                  </p>
-                  <p>
-                    <strong>Species:</strong> {selected.species}
-                  </p>
-                  <p>
-                    <strong>Gender:</strong> {selected.gender}
-                  </p>
-                  <p>
-                    <strong>Location:</strong> {selected?.location?.name ?? 'Unknown'}
-                  </p>
-                  <p>
-                    <strong>Origin:</strong> {selected?.origin?.name ?? 'Unknown'}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
+          <div className="w-1/3 bg-white p-8">
+            <Outlet />
+          </div>
         </div>
       </ErrorBoundary>
     </>

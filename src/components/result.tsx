@@ -6,10 +6,9 @@ interface ResultType {
   results: Character[];
   error?: string;
   loading: boolean;
-  onSelectCard: (char: Character) => void;
 }
 
-const Result: React.FC<ResultType> = ({ results, error, loading, onSelectCard }: ResultType) => {
+const Result: React.FC<ResultType> = ({ results, error, loading }: ResultType) => {
   return (
     <fieldset className="relative m-2 flex gap-2 rounded-xs border border-solid border-blue-800 p-2">
       <legend className="mb-2 text-xs text-blue-800">Results</legend>
@@ -19,7 +18,7 @@ const Result: React.FC<ResultType> = ({ results, error, loading, onSelectCard }:
         </div>
       )}
 
-      {results.length > 0 && !error && <CardsList results={results} onSelectCard={onSelectCard} />}
+      {results.length > 0 && !error && <CardsList results={results} />}
       {loading && (
         <div className="fixed inset-0 z-2 flex justify-center bg-gray-700/90 px-2 py-1 text-xl">
           <div
