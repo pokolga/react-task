@@ -1,5 +1,6 @@
 import React from 'react';
 import opImage from '../assets/olga.jpg';
+import reactLogo from '../assets/react.svg';
 
 const About: React.FC = () => {
   return (
@@ -24,6 +25,12 @@ const About: React.FC = () => {
             they land on one of my sites.
           </p>
         </div>
+      </div>
+      <div className="flex justify-center">
+        <a href="https://rs.school/courses/reactjs" target="_blank" rel="noreferrer">
+          <img className="inline" src={reactLogo} width="50" alt="rs school logo" />
+          <span className="text-cyan-700"> RS School: React Course</span>
+        </a>
       </div>
     </>
   );
