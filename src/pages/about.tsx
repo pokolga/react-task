@@ -11,7 +11,7 @@ const About: React.FC = () => {
           <p>
             I&apos;m a frontend developer and JavaScript instructor with 13 years of experience. My
             students have gone on to build their careers across the globe — from EPAM to Google,
-            from Sweden to Japan. Although I was unfairly dismissed from BSU, I remain undeterred:
+            from Sweden to Japan. Although I was dismissed from BSU, I remain undeterred: when one
             when one reality closes, another can be found… or simply opened with a portal.
           </p>
           <p>
