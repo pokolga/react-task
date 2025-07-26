@@ -1,12 +1,17 @@
 import { render, screen } from '@testing-library/react';
-import Home from './../pages/home';
+import Home from '../pages/home';
 import { describe, expect, it, beforeEach, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import type { CharacterType } from '../models/types';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('Home', () => {
   it('renders headline', () => {
-    render(<Home />);
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
     const headline: HTMLElement = screen.getByText(/Characters Rick&Morty/i);
     expect(headline).toBeInTheDocument();
   });
@@ -29,7 +34,11 @@ describe('For Search component', () => {
 
     vi.stubGlobal('fetch', mockFetch);
 
-    render(<Home />);
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
 
     const input: HTMLInputElement = screen.getByPlaceholderText('Search...');
     const button: HTMLButtonElement = screen.getByRole('button', { name: /search/i });
@@ -58,7 +67,11 @@ describe('For Search component', () => {
 
     vi.stubGlobal('fetch', mockFetch);
 
-    render(<Home />);
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
 
     const input: HTMLInputElement = screen.getByPlaceholderText('Search...');
     const button: HTMLButtonElement = screen.getByRole('button', { name: /search/i });
@@ -83,8 +96,11 @@ it('Displays 404 error message when no results found', async () => {
         } as Response)
     )
   );
-
-  render(<Home />);
+  render(
+    <MemoryRouter>
+      <Home />
+    </MemoryRouter>
+  );
 
   const errorMessage = await screen.findByText(/Error: 404 Nothing was found for your request!/i);
 
