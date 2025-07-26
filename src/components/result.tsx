@@ -1,9 +1,10 @@
 import React from 'react';
-import type { Character } from '../models/types';
+import type { CharacterType } from '../models/types';
 import { CardsList } from './cardsList';
+import Spinner from './spinner';
 
 interface ResultType {
-  results: Character[];
+  results: CharacterType[];
   error?: string;
   loading: boolean;
 }
@@ -19,14 +20,7 @@ const Result: React.FC<ResultType> = ({ results, error, loading }: ResultType) =
       )}
 
       {results.length > 0 && !error && <CardsList results={results} />}
-      {loading && (
-        <div className="fixed inset-0 z-2 flex justify-center bg-gray-700/90 px-2 py-1 text-xl">
-          <div
-            className="h-8 w-8 animate-spin place-self-center rounded-full border-4 border-white border-t-transparent"
-            data-testid="spinner"
-          ></div>
-        </div>
-      )}
+      {loading && <Spinner />}
     </fieldset>
   );
 };
