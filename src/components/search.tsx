@@ -1,20 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useLSQuery } from '../services/use-ls-query';
 
 type Props = {
   onSearch: (query: string) => Promise<void>;
 };
 
 const Search: React.FC<Props> = ({ onSearch }) => {
-  const [query, setQuery] = useState('');
-
-  useEffect(() => {
-    let initialValue = localStorage.getItem('query');
-    if (initialValue === null) {
-      initialValue = '';
-    }
-    setQuery(initialValue);
-    onSearch(initialValue);
-  }, [onSearch]);
+  const [query, setQuery] = useLSQuery(onSearch);
 
   const inputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
