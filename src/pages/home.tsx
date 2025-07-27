@@ -60,7 +60,7 @@ const Home: React.FC = () => {
       <ErrorBoundary
         fallback={<p className="text-red text-2xl font-bold">Something went wrong...</p>}
       >
-        <div className="flex h-screen">
+        <div className="flex">
           <div className="px-6 py-2">
             <Search onSearch={whenSearch} />
             <Result results={results} error={error} loading={loading} />
