@@ -61,7 +61,7 @@ const Home: React.FC = () => {
         fallback={<p className="text-red text-2xl font-bold">Something went wrong...</p>}
       >
         <div className="flex h-screen">
-          <div className="w-3/4 px-6 py-2">
+          <div className="px-6 py-2">
             <Search onSearch={whenSearch} />
             <Result results={results} error={error} loading={loading} />
             {results.length > 0 && info && (
@@ -86,9 +86,8 @@ const Home: React.FC = () => {
               </div>
             )}
           </div>
-          <div className="w-1/4 bg-white p-8">
-            <Outlet />
-          </div>
+
+          <Outlet />
         </div>
       </ErrorBoundary>
     </main>
