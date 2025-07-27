@@ -13,7 +13,7 @@ const Home: React.FC = () => {
   const [error, setError] = useState<string | undefined>();
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState('');
-  const [info, setInfo] = useState<{ next: InfoItem; prev: InfoItem } | null>(null);
+  const [info, setInfo] = useState<{ next: InfoItem; prev: InfoItem; pages: number } | null>(null);
   const navigate = useNavigate();
 
   const timeoutId = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -61,11 +61,11 @@ const Home: React.FC = () => {
         fallback={<p className="text-red text-2xl font-bold">Something went wrong...</p>}
       >
         <div className="flex h-screen">
-          <div className="w-3/4 overflow-y-auto p-6">
+          <div className="w-3/4 px-6 py-2">
             <Search onSearch={whenSearch} />
             <Result results={results} error={error} loading={loading} />
             {results.length > 0 && info && (
-              <div className="my-4 flex justify-center gap-4">
+              <div className="item-center my-4 flex items-center justify-center gap-4">
                 <button
                   disabled={!info.prev}
                   onClick={() => whenSearch(query, page - 1)}
@@ -80,6 +80,9 @@ const Home: React.FC = () => {
                 >
                   Next
                 </button>
+                <span className="text-sm text-gray-600">
+                  Page {page} of {info.pages}
+                </span>
               </div>
             )}
           </div>

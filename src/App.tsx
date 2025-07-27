@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
 import Home from './pages/home';
 import About from './pages/about';
 import NotFound from './pages/404';
@@ -7,14 +7,20 @@ import Character from './pages/character';
 function App() {
   return (
     <BrowserRouter>
-      <nav className="border-b-solid m-8 border-b-2 border-b-blue-500 p-2 text-blue-500">
-        <Link to="/" className="m-4 p-1 hover:bg-white">
+      <nav className="border-b-solid mx-8 my-2 border-b-2 border-b-blue-500 p-2 text-blue-500">
+        <NavLink
+          to="/"
+          className={({ isActive }) => (isActive ? 'font-bold' : 'hover:text-blue-300')}
+        >
           Home
-        </Link>{' '}
+        </NavLink>{' '}
         ●{' '}
-        <Link to="/about" className="m-4 p-1 hover:bg-white">
+        <NavLink
+          to="/about"
+          className={({ isActive }) => (isActive ? 'font-bold' : 'hover:text-blue-300')}
+        >
           About me
-        </Link>
+        </NavLink>
       </nav>
 
       <Routes>
