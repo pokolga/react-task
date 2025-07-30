@@ -44,11 +44,8 @@ const Character: React.FC = () => {
     );
 
   return (
-    <div
-      className="mt-4 h-min w-[300px] flex-shrink-0 rounded-sm border border-solid border-gray-200 bg-white p-4 shadow hover:shadow-xl"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <div>
+    <div className="mt-4 mr-2 w-[300px] flex-shrink-0" onClick={(e) => e.stopPropagation()}>
+      <div className="rounded-sm border border-solid border-gray-200 bg-(--color-bg-card) p-4 shadow hover:shadow-xl">
         <button
           className="mb-4 cursor-pointer rounded-sm border-2 border-solid border-transparent hover:border-red-300 active:bg-red-300"
           onClick={() => navigate('/')}
