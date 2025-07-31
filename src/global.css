@@ -6,7 +6,7 @@
   --color-bg-button: rgb(43, 127, 255);
   --color-text-button: #ffffff;
   --color-border: rgb(162, 199, 255);
-  --color-bg-card: #ffffff;
+  --color-bg-card: rgba(162, 199, 255, 0.5);
 }
 
 .dark {

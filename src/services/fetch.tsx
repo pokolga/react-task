@@ -9,3 +9,11 @@ export async function getData(query: string, page: number = 1): Promise<ApiRespo
   const data = await res.json();
   return data;
 }
+
+export async function getMultipleCharacters(query: string): Promise<ApiResponse> {
+  const url = `${APICharacter}/${query}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`${res.status}`);
+  const data = await res.json();
+  return data;
+}
