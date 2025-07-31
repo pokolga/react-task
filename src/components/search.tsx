@@ -32,7 +32,7 @@ const Search: React.FC<Props> = ({ onSearch }) => {
         onChange={inputChange}
         onKeyDown={handleKeyDown}
         placeholder="Search..."
-        className="w-[90%] rounded border border-gray-600 bg-(--color-bg-card) px-4 py-2"
+        className="w-[90%] rounded border border-gray-600 bg-(--color-bg-card) px-4 py-2 text-(--color-text)"
       />
       <button onClick={searchClick} className={`${btnBase}`}>
         Search

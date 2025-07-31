@@ -13,7 +13,7 @@ export const Card: React.FC<CardProps> = ({ character, onSelect }) => {
         e.stopPropagation();
         onSelect();
       }}
-      className="w-64 rounded bg-(--color-bg-card) p-4 shadow hover:shadow-xl"
+      className="w-64 rounded bg-(--color-bg-card) p-4 text-(--color-text) shadow hover:shadow-xl"
     >
       <img
         src={character.image}
