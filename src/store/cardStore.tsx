@@ -18,3 +18,7 @@ export const useCardStore = create<Store>()(
     }
   )
 );
+
+export const useSelectedIds = () => useCardStore((s) => s.selectedIds);
+export const useToggleCard = () => useCardStore((s) => s.toggleCard);
+export const useIsSelected = (id: string) => useCardStore((s) => s.isSelected(id));

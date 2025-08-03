@@ -1,6 +1,6 @@
 import React from 'react';
 import type { CharacterType } from '../models/types';
-import { useCardStore } from '../services/cardStore';
+import { useIsSelected, useToggleCard } from '../store/cardStore';
 
 interface CardProps {
   character: CharacterType;
@@ -8,8 +8,8 @@ interface CardProps {
 }
 
 export const Card: React.FC<CardProps> = ({ character, onSelect }) => {
-  const toggleCard = useCardStore((s) => s.toggleCard);
-  const isSelected = useCardStore((s) => s.isSelected(String(character.id)));
+  const toggleCard = useToggleCard();
+  const isSelected = useIsSelected(String(character.id));
   return (
     <div
       onClick={(e) => {

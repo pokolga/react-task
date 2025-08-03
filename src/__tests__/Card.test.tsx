@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { Card } from '../components/card';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { CharacterType } from '../models/types';
-import { useCardStore } from '../services/cardStore';
+import { useCardStore } from '../store/cardStore';
 
 describe('Card', () => {
   const mockCharacter: CharacterType = {

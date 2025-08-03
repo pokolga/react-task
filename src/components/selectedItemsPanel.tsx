@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { useCardStore } from '../services/cardStore';
+import { useCardStore } from '../store/cardStore';
 import { btnBase } from '../models/constants';
 import { getMultipleCharacters } from '../services/fetch';
 

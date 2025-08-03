@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useCardStore } from '../services/cardStore';
+import { useCardStore } from '../store/cardStore';
 
 describe('useCardStore toggleCard (real implementation)', () => {
   beforeEach(() => {

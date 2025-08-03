@@ -1,8 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { useCardStore } from '../services/cardStore';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { useCardStore } from '../store/cardStore';
 import * as fetchModule from '../services/fetch';
 import { SelectedItemsPanel } from '../components/selectedItemsPanel';
+import userEvent from '@testing-library/user-event';
 
 vi.mock('../services/fetch');
 
@@ -60,8 +61,20 @@ describe('SelectedItemsPanel tests', () => {
 
     const clickSpy = vi.spyOn(anchor, 'click');
 
-    await fireEvent.click(screen.getByText(/Download/i));
+    await userEvent.click(screen.getByText(/Download/i));
 
     expect(clickSpy).toHaveBeenCalled();
+  });
+
+  it('generates correct filename on download', async () => {
+    render(<SelectedItemsPanel SelectedIds={['1']} />);
+
+    const downloadButton = screen.getByText('Download');
+    await userEvent.click(downloadButton);
+
+    await waitFor(() => {
+      const link = screen.getByText('virtual link') as HTMLAnchorElement;
+      expect(link.download).toBe('1_items.csv');
+    });
   });
 });
