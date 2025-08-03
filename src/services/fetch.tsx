@@ -1,5 +1,5 @@
 import { APICharacter } from '../models/constants';
-import type { ApiResponse } from '../models/types';
+import type { ApiResponse, CharacterType } from '../models/types';
 
 export async function getData(query: string, page: number = 1): Promise<ApiResponse> {
   const showName = query ? `name=${encodeURIComponent(query)}&` : '';
@@ -10,10 +10,13 @@ export async function getData(query: string, page: number = 1): Promise<ApiRespo
   return data;
 }
 
-export async function getMultipleCharacters(query: string): Promise<ApiResponse> {
+export async function getMultipleCharacters(query: string): Promise<CharacterType[]> {
   const url = `${APICharacter}/${query}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`${res.status}`);
   const data = await res.json();
-  return data;
+  if (Array.isArray(data)) {
+    return data;
+  }
+  return [data];
 }
