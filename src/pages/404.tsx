@@ -1,8 +1,8 @@
-import React from 'react';
+import { type FC } from 'react';
 import { Link } from 'react-router-dom';
 import { btnBase } from '../models/constants';
 
-const NotFound: React.FC = () => {
+const NotFound: FC = () => {
   return (
     <div className="flex h-screen flex-col items-center justify-center">
       <h1 className="my-4 text-center text-4xl font-bold text-(--color-bg-button)">ERROR 404</h1>

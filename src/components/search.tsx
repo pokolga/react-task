@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type FC } from 'react';
 import { useLSQuery } from '../services/use-ls-query';
 import { btnBase } from '../models/constants';
 
@@ -6,7 +6,7 @@ type Props = {
   onSearch: (query: string) => Promise<void>;
 };
 
-const Search: React.FC<Props> = ({ onSearch }) => {
+const Search: FC<Props> = ({ onSearch }) => {
   const [query, setQuery] = useLSQuery(onSearch);
 
   const inputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

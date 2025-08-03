@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { type FC, useRef } from 'react';
 import { useCardStore } from '../store/cardStore';
 import { btnBase } from '../models/constants';
 import { getMultipleCharacters } from '../services/fetch';
@@ -7,7 +7,7 @@ type Props = {
   SelectedIds: string[];
 };
 
-export const SelectedItemsPanel: React.FC<Props> = ({ SelectedIds }: Props) => {
+export const SelectedItemsPanel: FC<Props> = ({ SelectedIds }: Props) => {
   const { selectedIds, toggleCard } = useCardStore();
   const downloadRef = useRef<HTMLAnchorElement>(null);
 

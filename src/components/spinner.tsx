@@ -1,6 +1,6 @@
-import React from 'react';
+import { type FC } from 'react';
 
-const Spinner: React.FC = () => {
+const Spinner: FC = () => {
   return (
     <div className="fixed inset-0 z-50 flex justify-center bg-gray-700/90 px-2 py-1 text-xl">
       <div

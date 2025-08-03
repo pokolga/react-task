@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, type FC } from 'react';
 import Result from './../components/result';
 import Search from './../components/search';
 import type { CharacterType, InfoItem } from './../models/types';
@@ -7,7 +7,7 @@ import { btnBase, spinnerDelay } from './../models/constants';
 import ErrorBoundary from './../components/errorBoundary';
 import { Outlet, useNavigate } from 'react-router-dom';
 
-const Home: React.FC = () => {
+const Home: FC = () => {
   const [results, setResults] = useState<CharacterType[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();

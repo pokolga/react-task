@@ -1,4 +1,4 @@
-import React from 'react';
+import { type FC } from 'react';
 import type { CharacterType } from '../models/types';
 import { useIsSelected, useToggleCard } from '../store/cardStore';
 
@@ -7,7 +7,7 @@ interface CardProps {
   onSelect: () => void;
 }
 
-export const Card: React.FC<CardProps> = ({ character, onSelect }) => {
+export const Card: FC<CardProps> = ({ character, onSelect }) => {
   const toggleCard = useToggleCard();
   const isSelected = useIsSelected(String(character.id));
   return (

@@ -1,8 +1,8 @@
-import React from 'react';
+import { type FC } from 'react';
 import opImage from '../assets/olga.jpg';
 import reactLogo from '../assets/react.svg';
 
-const About: React.FC = () => {
+const About: FC = () => {
   return (
     <div className="h-dvh">
       <h1 className="m-4 mb-10 text-center text-2xl font-bold text-(--color-bg-button)">

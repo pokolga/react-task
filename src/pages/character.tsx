@@ -1,10 +1,10 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type FC } from 'react';
 import { APICharacter, unknownCharacter } from '../models/constants';
 import Spinner from '../components/spinner';
 import type { CharacterType } from '../models/types';
 
-const Character: React.FC = () => {
+const Character: FC = () => {
   const { id } = useParams<{ id: string }>();
   const [character, setCharacter] = useState<CharacterType | null | undefined>(undefined);
   const [loading, setLoading] = useState(true);

@@ -3,12 +3,13 @@ import Home from './pages/home';
 import About from './pages/about';
 import NotFound from './pages/404';
 import Character from './pages/character';
-import { useContext, useState } from 'react';
+import { useContext, useState, type FC } from 'react';
 import ThemeContext from './themeContext';
 import { btnBase } from './models/constants';
 
-function App() {
-  const [isDarkMode, setIsDarkMode] = useState(useContext(ThemeContext));
+const App: FC = () => {
+  const themeFromContext = useContext(ThemeContext);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(themeFromContext);
   const toggleTheme = () => setIsDarkMode((prev) => !prev);
   return (
     <ThemeContext value={isDarkMode}>
@@ -44,6 +45,6 @@ function App() {
       </BrowserRouter>
     </ThemeContext>
   );
-}
+};
 
 export default App;

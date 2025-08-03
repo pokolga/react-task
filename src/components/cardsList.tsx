@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react';
+import { type ReactNode, type FC } from 'react';
 import type { CharacterType } from '../models/types';
 import { Card } from './card';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +10,7 @@ interface ListProps {
   onClick?: () => void;
 }
 
-export const CardsList: React.FC<ListProps> = ({ results, onClick }): ReactNode => {
+export const CardsList: FC<ListProps> = ({ results, onClick }): ReactNode => {
   const navigate = useNavigate();
   const selectedIds = useSelectedIds();
   return (
