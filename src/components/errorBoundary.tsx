@@ -29,7 +29,7 @@ export default class ErrorBoundary extends React.Component<ErrorProps, ErrorStat
           <pre className="mb-4 text-sm">{this.state.error?.message}</pre>
           <button
             onClick={this.tryAgain}
-            className="rounded bg-red-600 px-4 py-2 text-white hover:bg-red-500"
+            className="rounded bg-red-600 px-4 py-2 text-(--color-text-button) hover:bg-red-500"
           >
             Try again!
           </button>

@@ -1,13 +1,13 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, type FC } from 'react';
 import Result from './../components/result';
 import Search from './../components/search';
 import type { CharacterType, InfoItem } from './../models/types';
 import { getData } from './../services/fetch';
-import { spinnerDelay } from './../models/constants';
+import { btnBase, spinnerDelay } from './../models/constants';
 import ErrorBoundary from './../components/errorBoundary';
 import { Outlet, useNavigate } from 'react-router-dom';
 
-const Home: React.FC = () => {
+const Home: FC = () => {
   const [results, setResults] = useState<CharacterType[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
@@ -54,7 +54,7 @@ const Home: React.FC = () => {
 
   return (
     <main onClick={() => navigate('/')}>
-      <h1 className="my-4 text-center text-2xl font-bold text-blue-600">
+      <h1 className="my-4 text-center text-2xl font-bold text-(--color-bg-button)">
         Characters Rick&amp;Morty
       </h1>
       <ErrorBoundary
@@ -69,18 +69,18 @@ const Home: React.FC = () => {
                 <button
                   disabled={!info.prev}
                   onClick={() => whenSearch(query, page - 1)}
-                  className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-300 disabled:cursor-not-allowed disabled:bg-gray-300"
+                  className={`${btnBase} disabled:cursor-not-allowed disabled:bg-gray-300`}
                 >
                   Previous
                 </button>
                 <button
                   disabled={!info.next}
                   onClick={() => whenSearch(query, page + 1)}
-                  className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-300 disabled:cursor-not-allowed disabled:bg-gray-300"
+                  className={`${btnBase} disabled:cursor-not-allowed disabled:bg-gray-300`}
                 >
                   Next
                 </button>
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-(--color-text)">
                   Page {page} of {info.pages}
                 </span>
               </div>

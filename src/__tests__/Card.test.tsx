@@ -1,8 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { Card } from '../components/card';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { CharacterType } from '../models/types';
-import userEvent from '@testing-library/user-event';
+import { useCardStore } from '../store/cardStore';
 
 describe('Card', () => {
   const mockCharacter: CharacterType = {
@@ -41,26 +41,31 @@ describe('Card', () => {
     expect(img).toHaveAttribute('src', 'abracadabra');
   });
 
-  it('calls onSelect when card is clicked', async () => {
-    const mockCharacter = {
+  const mockToggleCard = vi.fn();
+
+  beforeEach(() => {
+    useCardStore.setState({
+      selectedIds: ['1'],
+      toggleCard: mockToggleCard,
+      isSelected: (id: string) => id === '1',
+    });
+  });
+
+  it('calls toggleCard when checkmark is clicked', () => {
+    const character: CharacterType = {
       id: 1,
-      name: 'Summer Smith',
-      status: 'Alive',
+      name: 'Rick Sanchez',
+      image: 'https://example.com/rick.png',
       species: 'Human',
-      image: 'summer.png',
+      status: 'Alive',
     };
 
-    const mockOnSelect = vi.fn();
-    render(<Card character={mockCharacter} onSelect={mockOnSelect} />);
+    render(<Card character={character} onSelect={() => {}} />);
 
-    const cardElement: HTMLElement | null = screen
-      .getByRole('img', { name: /Summer Smith/i })
-      .closest('div');
-    expect(cardElement).toBeInTheDocument();
-    if (cardElement) {
-      await userEvent.click(cardElement);
-    }
+    const checkmark = screen.getByText('✓');
+    fireEvent.click(checkmark);
 
-    expect(mockOnSelect).toHaveBeenCalledTimes(1);
+    expect(mockToggleCard).toHaveBeenCalledWith('1');
+    expect(mockToggleCard).toHaveBeenCalledTimes(1);
   });
 });

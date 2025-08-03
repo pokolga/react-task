@@ -1,10 +1,10 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type FC } from 'react';
 import { APICharacter, unknownCharacter } from '../models/constants';
 import Spinner from '../components/spinner';
 import type { CharacterType } from '../models/types';
 
-const Character: React.FC = () => {
+const Character: FC = () => {
   const { id } = useParams<{ id: string }>();
   const [character, setCharacter] = useState<CharacterType | null | undefined>(undefined);
   const [loading, setLoading] = useState(true);
@@ -45,10 +45,10 @@ const Character: React.FC = () => {
 
   return (
     <div
-      className="mt-4 h-min w-[300px] flex-shrink-0 rounded-sm border border-solid border-gray-200 bg-white p-4 shadow hover:shadow-xl"
+      className="mt-4 mr-2 w-[300px] flex-shrink-0 text-(--color-text)"
       onClick={(e) => e.stopPropagation()}
     >
-      <div>
+      <div className="rounded-sm border border-solid border-gray-200 bg-(--color-bg-card) p-4 shadow hover:shadow-xl">
         <button
           className="mb-4 cursor-pointer rounded-sm border-2 border-solid border-transparent hover:border-red-300 active:bg-red-300"
           onClick={() => navigate('/')}

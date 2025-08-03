@@ -31,3 +31,9 @@ export interface ApiResponse {
   info: Info;
   results: CharacterType[];
 }
+
+export type Store = {
+  selectedIds: string[];
+  toggleCard: (id: string) => void;
+  isSelected: (id: string) => boolean;
+};
