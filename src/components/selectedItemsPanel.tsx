@@ -45,7 +45,10 @@ export const SelectedItemsPanel: React.FC<Props> = ({ SelectedIds }: Props) => {
   };
 
   return (
-    <div className="flex w-[350px] items-center justify-between rounded-sm bg-(--color-bg-card) p-4 text-(--color-text)">
+    <div
+      className="flex w-[350px] items-center justify-between rounded-sm bg-(--color-bg-card) p-4 text-(--color-text)"
+      data-testid="selected-panel"
+    >
       <span> Selected: {selectedIds.length}</span>
       <button className={btnBase} onClick={handleUnselectAll}>
         Unselect all

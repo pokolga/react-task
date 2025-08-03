@@ -28,7 +28,7 @@ function App() {
             >
               About me
             </NavLink>
-            <button className={`ml-auto ${btnBase}`} onClick={toggleTheme}>
+            <button className={`ml-auto ${btnBase}`} onClick={toggleTheme} data-testid="theme">
               {isDarkMode ? '☀️ Light' : '🌙 Dark'}
             </button>
           </nav>

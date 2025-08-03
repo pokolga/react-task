@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import App from '../App';
 import { describe, expect, it } from 'vitest';
 
@@ -26,5 +26,19 @@ describe('App component', () => {
     render(<App />);
 
     expect(screen.getByText(/ERROR 404/i)).toBeInTheDocument();
+  });
+
+  it('toggles theme on click', () => {
+    localStorage.removeItem('theme');
+    document.documentElement.classList.remove('dark');
+
+    render(<App />);
+    const themeButton = screen.getByTestId('theme');
+
+    fireEvent.click(themeButton);
+    expect(themeButton).toHaveTextContent('🌙 Dark');
+
+    fireEvent.click(themeButton);
+    expect(themeButton).toHaveTextContent('☀️ Light');
   });
 });

@@ -1,11 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-
-type Store = {
-  selectedIds: string[];
-  toggleCard: (id: string) => void;
-  isSelected: (id: string) => boolean;
-};
+import type { Store } from '../models/types';
 
 export const useCardStore = create<Store>()(
   persist(
