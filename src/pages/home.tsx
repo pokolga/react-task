@@ -5,14 +5,15 @@ import type { CharacterType, InfoItem } from './../models/types';
 import { getData } from './../services/fetch';
 import { btnBase, spinnerDelay } from './../models/constants';
 import ErrorBoundary from './../components/errorBoundary';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 
 const Home: FC = () => {
+  const { page } = useParams();
+  const currentPage = Number(page) || 1;
   const [results, setResults] = useState<CharacterType[]>([]);
   const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState(() => localStorage.getItem('query') || '');
   const [error, setError] = useState<string | undefined>();
-  const [page, setPage] = useState(1);
-  const [query, setQuery] = useState('');
   const [info, setInfo] = useState<{ next: InfoItem; prev: InfoItem; pages: number } | null>(null);
   const navigate = useNavigate();
 
@@ -26,34 +27,47 @@ const Home: FC = () => {
     };
   }, []);
 
-  const whenSearch = useCallback(async (query: string, pageNum = 1) => {
-    const trimmedQuery = query.trim();
-    setQuery(trimmedQuery);
-    localStorage.setItem('query', trimmedQuery);
-    setLoading(true);
-    setError(undefined);
-    setPage(pageNum);
+  const whenSearch = useCallback(
+    async (newQuery: string) => {
+      const trimmedQuery = newQuery.trim();
+      localStorage.setItem('query', trimmedQuery);
+      setQuery(trimmedQuery);
+      navigate('/page/1');
+    },
+    [navigate]
+  );
 
-    try {
-      const data = await getData(trimmedQuery, pageNum);
-      setResults(data.results);
-      setInfo(data.info);
-    } catch (error) {
-      let errorMessage = '';
-      if (error && /404/.test(String(error))) {
-        errorMessage = 'Nothing was found for your request';
+  const loadPage = useCallback(
+    async (pageNum: number) => {
+      setLoading(true);
+      setError(undefined);
+
+      try {
+        const data = await getData(query, pageNum);
+        setResults(data.results);
+        setInfo(data.info);
+      } catch (error) {
+        let errorMessage = '';
+        if (error && /404/.test(String(error))) {
+          errorMessage = 'Nothing was found for your request';
+        }
+        setResults([]);
+        setError(`${error} ${errorMessage}!`);
+      } finally {
+        timeoutId.current = setTimeout(() => {
+          setLoading(false);
+        }, spinnerDelay);
       }
-      setResults([]);
-      setError(`${error} ${errorMessage}!`);
-    } finally {
-      timeoutId.current = setTimeout(() => {
-        setLoading(false);
-      }, spinnerDelay);
-    }
-  }, []);
+    },
+    [query]
+  );
+
+  useEffect(() => {
+    loadPage(currentPage);
+  }, [currentPage, query, loadPage]);
 
   return (
-    <main onClick={() => navigate('/')}>
+    <main onClick={() => navigate(`/page/${currentPage}`)}>
       <h1 className="my-4 text-center text-2xl font-bold text-(--color-bg-button)">
         Characters Rick&amp;Morty
       </h1>
@@ -68,20 +82,26 @@ const Home: FC = () => {
               <div className="item-center my-4 flex items-center justify-center gap-4">
                 <button
                   disabled={!info.prev}
-                  onClick={() => whenSearch(query, page - 1)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/page/${currentPage - 1}`);
+                  }}
                   className={`${btnBase} disabled:cursor-not-allowed disabled:bg-gray-300`}
                 >
                   Previous
                 </button>
                 <button
                   disabled={!info.next}
-                  onClick={() => whenSearch(query, page + 1)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/page/${currentPage + 1}`);
+                  }}
                   className={`${btnBase} disabled:cursor-not-allowed disabled:bg-gray-300`}
                 >
                   Next
                 </button>
                 <span className="text-sm text-(--color-text)">
-                  Page {page} of {info.pages}
+                  Page {currentPage} of {info.pages}
                 </span>
               </div>
             )}

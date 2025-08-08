@@ -7,7 +7,7 @@ type Props = {
 };
 
 const Search: FC<Props> = ({ onSearch }) => {
-  const [query, setQuery] = useLSQuery(onSearch);
+  const [query, setQuery] = useLSQuery();
 
   const inputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
@@ -31,6 +31,7 @@ const Search: FC<Props> = ({ onSearch }) => {
         value={query}
         onChange={inputChange}
         onKeyDown={handleKeyDown}
+        onClick={(e) => e.stopPropagation()}
         placeholder="Search..."
         className="w-[90%] rounded border border-gray-600 bg-(--color-bg-card) px-4 py-2 text-(--color-text)"
       />

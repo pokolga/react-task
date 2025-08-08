@@ -10,7 +10,7 @@ const Character: FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-
+  const { page } = useParams();
   useEffect(() => {
     setLoading(true);
     setError(null);
@@ -51,7 +51,7 @@ const Character: FC = () => {
       <div className="rounded-sm border border-solid border-gray-200 bg-(--color-bg-card) p-4 shadow hover:shadow-xl">
         <button
           className="mb-4 cursor-pointer rounded-sm border-2 border-solid border-transparent hover:border-red-300 active:bg-red-300"
-          onClick={() => navigate('/')}
+          onClick={() => navigate(`/page/${page}`)}
         >
           ❌
         </button>
