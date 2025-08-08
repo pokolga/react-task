@@ -4,6 +4,7 @@ import { useCardStore } from '../store/cardStore';
 import * as fetchModule from '../services/fetch';
 import { SelectedItemsPanel } from '../components/selectedItemsPanel';
 import userEvent from '@testing-library/user-event';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 vi.mock('../services/fetch');
 
@@ -16,11 +17,16 @@ describe('SelectedItemsPanel tests', () => {
     });
   });
   const cardArray = ['1'];
+  const queryClient = new QueryClient();
 
   it('renders panel when card is selected', () => {
     useCardStore.setState({ selectedIds: cardArray });
 
-    render(<SelectedItemsPanel SelectedIds={cardArray} />);
+    render(
+      <QueryClientProvider client={queryClient}>
+        <SelectedItemsPanel SelectedIds={cardArray} />
+      </QueryClientProvider>
+    );
     expect(screen.getByText(/Selected: 1/i)).toBeInTheDocument();
     expect(screen.getByText(/Unselect all/)).toBeInTheDocument();
     expect(screen.getByText(/Download/i)).toBeInTheDocument();
@@ -30,7 +36,11 @@ describe('SelectedItemsPanel tests', () => {
     const cardsArray = ['1', '2'];
     useCardStore.setState({ selectedIds: cardsArray });
 
-    render(<SelectedItemsPanel SelectedIds={cardsArray} />);
+    render(
+      <QueryClientProvider client={queryClient}>
+        <SelectedItemsPanel SelectedIds={cardsArray} />
+      </QueryClientProvider>
+    );
     fireEvent.click(screen.getByText(/Unselect all/i));
 
     expect(useCardStore.getState().selectedIds).toEqual([]);
@@ -52,8 +62,11 @@ describe('SelectedItemsPanel tests', () => {
     );
 
     useCardStore.setState({ selectedIds: cardArray });
-
-    render(<SelectedItemsPanel SelectedIds={cardArray} />);
+    render(
+      <QueryClientProvider client={queryClient}>
+        <SelectedItemsPanel SelectedIds={cardArray} />
+      </QueryClientProvider>
+    );
 
     const anchor = screen.getByText(/virtual link/i) as HTMLAnchorElement;
 
@@ -67,8 +80,12 @@ describe('SelectedItemsPanel tests', () => {
   });
 
   it('generates correct filename on download', async () => {
-    render(<SelectedItemsPanel SelectedIds={['1']} />);
-
+    render(
+      <QueryClientProvider client={queryClient}>
+        <SelectedItemsPanel SelectedIds={['1']} />
+        );
+      </QueryClientProvider>
+    );
     const downloadButton = screen.getByText('Download');
     await userEvent.click(downloadButton);
 
