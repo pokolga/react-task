@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router-dom';
 import Home from './pages/home';
 import About from './pages/about';
 import NotFound from './pages/404';
@@ -38,7 +38,8 @@ const App: FC = () => {
             </nav>
 
             <Routes>
-              <Route path="/" element={<Home />}>
+              <Route path="/" element={<Navigate to="/page/1" replace />} />
+              <Route path="page/:page" element={<Home />}>
                 <Route path="characters/:id" element={<Character />} />
               </Route>
               <Route path="/about" element={<About />} />
