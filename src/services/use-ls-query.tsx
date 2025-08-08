@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-export function useLSQuery(onSearch: (query: string) => void) {
-  const [query, setQuery] = useState('');
+export function useLSQuery(): [string, (val: string) => void] {
+  const [query, setQueryState] = useState(() => localStorage.getItem('query') || '');
 
-  useEffect(() => {
-    const savedQuery = localStorage.getItem('query') ?? '';
-    setQuery(savedQuery);
-    onSearch(savedQuery);
-  }, [onSearch]);
+  const setQuery = (val: string) => {
+    localStorage.setItem('query', val);
+    setQueryState(val);
+  };
 
-  return [query, setQuery] as const;
+  return [query, setQuery];
 }
