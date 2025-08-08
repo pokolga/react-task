@@ -2,10 +2,14 @@ import { type FC, useRef } from 'react';
 import { useCardStore } from '../store/cardStore';
 import { btnBase } from '../models/constants';
 import { getMultipleCharacters } from '../services/fetch';
+import { useQuery } from '@tanstack/react-query';
+import type { CharacterType } from '../models/types';
 
 type Props = {
   SelectedIds: string[];
 };
+
+type QueryResult = CharacterType[];
 
 export const SelectedItemsPanel: FC<Props> = ({ SelectedIds }: Props) => {
   const { selectedIds, toggleCard } = useCardStore();
@@ -15,11 +19,18 @@ export const SelectedItemsPanel: FC<Props> = ({ SelectedIds }: Props) => {
     selectedIds.map((id) => toggleCard(id));
   };
 
-  const handleDownload = async () => {
-    const data = await getMultipleCharacters(SelectedIds.join());
+  const { refetch } = useQuery<QueryResult>({
+    queryKey: ['characters', SelectedIds],
+    queryFn: () => getMultipleCharacters(SelectedIds.join()),
+    enabled: false,
+  });
+
+  const handleDownload = async (): Promise<void> => {
+    const result = await refetch();
+    const data = result.data;
     if (!Array.isArray(data) || data.length === 0) return;
 
-    const csvData = data.map((item) => ({
+    const csvData = data.map((item: CharacterType) => ({
       ID: item.id,
       name: item.name,
       status: item.status,
