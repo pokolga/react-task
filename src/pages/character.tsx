@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useEffect, useState, type FC } from 'react';
 import { APICharacter, unknownCharacter } from '../models/constants';
 import Spinner from '../components/spinner';
@@ -10,7 +10,9 @@ const Character: FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const { page } = useParams();
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get('page') ?? '1';
+  const query = searchParams.get('name') ?? '';
   useEffect(() => {
     setLoading(true);
     setError(null);
@@ -51,7 +53,7 @@ const Character: FC = () => {
       <div className="rounded-sm border border-solid border-gray-200 bg-(--color-bg-card) p-4 shadow hover:shadow-xl">
         <button
           className="mb-4 cursor-pointer rounded-sm border-2 border-solid border-transparent hover:border-red-300 active:bg-red-300"
-          onClick={() => navigate(`/page/${page}`)}
+          onClick={() => navigate(`/?page=${page}&name=${query}`)}
         >
           ❌
         </button>

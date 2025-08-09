@@ -57,6 +57,7 @@ export const SelectedItemsPanel: FC<Props> = ({ SelectedIds }: Props) => {
 
   return (
     <div
+      onClick={(e) => e.stopPropagation()}
       className="flex w-[350px] items-center justify-between rounded-sm bg-(--color-bg-card) p-4 text-(--color-text)"
       data-testid="selected-panel"
     >

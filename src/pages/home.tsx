@@ -1,23 +1,37 @@
-import { useState, useRef, useEffect, useCallback, type FC } from 'react';
-import Result from './../components/result';
-import Search from './../components/search';
-import type { CharacterType, InfoItem } from './../models/types';
-import { getData } from './../services/fetch';
-import { btnBase, spinnerDelay } from './../models/constants';
-import ErrorBoundary from './../components/errorBoundary';
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import { useCallback, useEffect, useRef, useState, type FC } from 'react';
+import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
+import type { CharacterType, InfoItem } from '../models/types';
+import { getData } from '../services/fetch';
+import { btnBase, spinnerDelay } from '../models/constants';
+import ErrorBoundary from '../components/errorBoundary';
+import Search from '../components/search';
+import Result from '../components/result';
 
 const Home: FC = () => {
-  const { page } = useParams();
-  const currentPage = Number(page) || 1;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const queryFromParams = searchParams.get('name')?.trim() || '';
+  const currentPage = Number(searchParams.get('page')) || 1;
+
+  const [query, setQuery] = useState(queryFromParams);
+  const [activeQuery, setActiveQuery] = useState(queryFromParams);
+
   const [results, setResults] = useState<CharacterType[]>([]);
   const [loading, setLoading] = useState(false);
-  const [query, setQuery] = useState(() => localStorage.getItem('query') || '');
   const [error, setError] = useState<string | undefined>();
   const [info, setInfo] = useState<{ next: InfoItem; prev: InfoItem; pages: number } | null>(null);
-  const navigate = useNavigate();
 
   const timeoutId = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const hasQuery = searchParams.has('name');
+    const storedQuery = localStorage.getItem('query');
+    if (!hasQuery && storedQuery) {
+      setSearchParams({ name: storedQuery, page: '1' });
+      setQuery(storedQuery);
+      setActiveQuery(storedQuery);
+    }
+  }, [searchParams, setSearchParams]);
 
   useEffect(() => {
     return () => {
@@ -31,10 +45,10 @@ const Home: FC = () => {
     async (newQuery: string) => {
       const trimmedQuery = newQuery.trim();
       localStorage.setItem('query', trimmedQuery);
-      setQuery(trimmedQuery);
-      navigate('/page/1');
+      setSearchParams({ name: trimmedQuery, page: '1' });
+      setActiveQuery(trimmedQuery);
     },
-    [navigate]
+    [setSearchParams]
   );
 
   const loadPage = useCallback(
@@ -43,7 +57,7 @@ const Home: FC = () => {
       setError(undefined);
 
       try {
-        const data = await getData(query, pageNum);
+        const data = await getData(activeQuery, pageNum);
         setResults(data.results);
         setInfo(data.info);
       } catch (error) {
@@ -59,15 +73,15 @@ const Home: FC = () => {
         }, spinnerDelay);
       }
     },
-    [query]
+    [activeQuery]
   );
 
   useEffect(() => {
     loadPage(currentPage);
-  }, [currentPage, query, loadPage]);
+  }, [currentPage, activeQuery, loadPage]);
 
   return (
-    <main onClick={() => navigate(`/page/${currentPage}`)}>
+    <main onClick={() => navigate(`/?name=${activeQuery}&page=${currentPage}`)}>
       <h1 className="my-4 text-center text-2xl font-bold text-(--color-bg-button)">
         Characters Rick&amp;Morty
       </h1>
@@ -76,7 +90,7 @@ const Home: FC = () => {
       >
         <div className="flex">
           <div className="px-6 py-2">
-            <Search onSearch={whenSearch} />
+            <Search query={query} setQuery={setQuery} onSearch={whenSearch} />
             <Result results={results} error={error} loading={loading} />
             {results.length > 0 && info && (
               <div className="item-center my-4 flex items-center justify-center gap-4">
@@ -84,7 +98,7 @@ const Home: FC = () => {
                   disabled={!info.prev}
                   onClick={(e) => {
                     e.stopPropagation();
-                    navigate(`/page/${currentPage - 1}`);
+                    setSearchParams({ name: activeQuery, page: String(currentPage - 1) });
                   }}
                   className={`${btnBase} disabled:cursor-not-allowed disabled:bg-gray-300`}
                 >
@@ -94,7 +108,7 @@ const Home: FC = () => {
                   disabled={!info.next}
                   onClick={(e) => {
                     e.stopPropagation();
-                    navigate(`/page/${currentPage + 1}`);
+                    setSearchParams({ name: activeQuery, page: String(currentPage + 1) });
                   }}
                   className={`${btnBase} disabled:cursor-not-allowed disabled:bg-gray-300`}
                 >
