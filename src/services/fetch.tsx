@@ -20,3 +20,12 @@ export async function getMultipleCharacters(query: string): Promise<CharacterTyp
   }
   return [data];
 }
+
+export async function getCharacter(id: string): Promise<CharacterType> {
+  const res = await fetch(`${APICharacter}/${id}`);
+  if (!res.ok) {
+    throw new Error(`${res.status}`);
+  }
+  const data = await res.json();
+  return data;
+}

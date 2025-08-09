@@ -1,47 +1,39 @@
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { useEffect, useState, type FC } from 'react';
-import { APICharacter, unknownCharacter } from '../models/constants';
+import { type FC } from 'react';
+import { unknownCharacter } from '../models/constants';
 import Spinner from '../components/spinner';
 import type { CharacterType } from '../models/types';
+import { useQuery } from '@tanstack/react-query';
+import { getCharacter } from '../services/fetch';
 
 const Character: FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [character, setCharacter] = useState<CharacterType | null | undefined>(undefined);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const page = searchParams.get('page') ?? '1';
   const query = searchParams.get('name') ?? '';
-  useEffect(() => {
-    setLoading(true);
-    setError(null);
-    fetch(`${APICharacter}/${id}`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error('404');
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setCharacter(data);
-      })
-      .catch(() => {
-        setError('Nothing was found for your request');
-        setCharacter(null);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [id]);
 
-  if (loading) return <Spinner />;
-  if (character === undefined) return null;
+  const {
+    data: character,
+    isLoading,
+    isError,
+    error,
+  } = useQuery<CharacterType, Error>({
+    queryKey: ['character', id],
+    queryFn: () => {
+      if (!id) throw new Error('Missing character ID');
+      return getCharacter(id);
+    },
+    enabled: !!id,
+    retry: false,
+  });
 
-  if (character === null)
+  if (isLoading) return <Spinner />;
+  if (isError || character === null)
     return (
       <div>
-        <p>{error ?? ''}</p>
+        <p>{error.message ? error.message : 'Error loading character'}</p>
       </div>
     );
 
