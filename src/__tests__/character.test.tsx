@@ -128,7 +128,7 @@ describe('Character component', () => {
     const closeButton = await screen.findByRole('button', { name: /❌/ });
     await userEvent.click(closeButton);
 
-    expect(mockNavigate).toHaveBeenCalledWith(expect.stringContaining('/page/'));
+    expect(mockNavigate).toHaveBeenCalledWith(expect.stringContaining('/?page=1&name='));
   });
 });
 

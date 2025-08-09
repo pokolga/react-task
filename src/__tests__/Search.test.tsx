@@ -1,83 +1,79 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Search from '../components/search';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-
-type SearchCallback = (query: string) => Promise<void>;
-
-beforeEach(() => {
-  localStorage.clear();
-  vi.restoreAllMocks();
-});
+import { useState } from 'react';
+import Search from '../components/search';
 
 describe('Search Component', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    vi.restoreAllMocks();
+  });
+
+  const mockSetQuery = vi.fn();
+  const mockSearch = vi.fn();
+  const user = userEvent.setup();
+
   it('renders input and button', () => {
-    const mockSearch: SearchCallback = vi.fn();
-    render(<Search onSearch={mockSearch} />);
+    const query = 'Morty';
+
+    render(<Search query={query} setQuery={mockSetQuery} onSearch={mockSearch} />);
 
     const input = screen.getByPlaceholderText('Search...');
     const button = screen.getByRole('button', { name: /search/i });
 
     expect(input).toBeInTheDocument();
     expect(button).toBeInTheDocument();
-  });
-
-  it('displays saved search from localStorage', async () => {
-    localStorage.setItem('query', 'Rick');
-    const mockSearch: SearchCallback = vi.fn();
-    render(<Search onSearch={mockSearch} />);
-
-    const input = await screen.findByDisplayValue('Rick');
-    expect(input).toBeInTheDocument();
+    expect(input).toHaveValue('Morty');
   });
 
   it('shows empty input when no saved term exists', () => {
-    const mockSearch: SearchCallback = vi.fn();
-    render(<Search onSearch={mockSearch} />);
-
+    render(<Search query="" setQuery={mockSetQuery} onSearch={mockSearch} />);
     const input = screen.getByPlaceholderText('Search...');
     expect(input).toHaveValue('');
   });
 
-  it('updates input value when user types', async () => {
-    const mockSearch: SearchCallback = vi.fn();
-    render(<Search onSearch={mockSearch} />);
-
+  it('calls setQuery when user types', async () => {
+    render(<Search query="" setQuery={mockSetQuery} onSearch={mockSearch} />);
     const input = screen.getByPlaceholderText('Search...');
-    await userEvent.type(input, 'Morty');
 
-    expect(input).toHaveValue('Morty');
+    await user.type(input, 'Morty');
+
+    expect(mockSetQuery).toHaveBeenCalledTimes(5);
+    expect(mockSetQuery).toHaveBeenLastCalledWith('y');
   });
 
   it('triggers search callback with correct parameters on button click', async () => {
-    const onSearchMock: SearchCallback = vi.fn();
-    render(<Search onSearch={onSearchMock} />);
+    const query = 'Rick';
 
-    const input = screen.getByPlaceholderText('Search...');
+    render(<Search query={query} setQuery={mockSetQuery} onSearch={mockSearch} />);
     const button = screen.getByRole('button', { name: /search/i });
 
-    await userEvent.type(input, 'Morty');
-    await userEvent.click(button);
+    await user.click(button);
 
-    expect(onSearchMock).toHaveBeenCalledWith('Morty');
-  });
-
-  it('retrieves saved search term on component mount', async () => {
-    localStorage.setItem('query', 'Morty');
-    const onSearchMock: SearchCallback = vi.fn();
-    render(<Search onSearch={onSearchMock} />);
-
-    const input = screen.getByDisplayValue('Morty');
-    expect(input).toBeInTheDocument();
+    expect(mockSearch).toHaveBeenCalledWith('Rick');
   });
 
   it('calls onSearch when Enter key is pressed in input field', async () => {
-    const onSearchMock: SearchCallback = vi.fn();
-    render(<Search onSearch={onSearchMock} />);
-
+    render(<Search query="Morty" setQuery={mockSetQuery} onSearch={mockSearch} />);
     const input = screen.getByPlaceholderText('Search...');
-    await userEvent.type(input, 'Morty{enter}');
 
-    expect(onSearchMock).toHaveBeenCalledWith('Morty');
+    await user.type(input, '{enter}');
+
+    expect(mockSearch).toHaveBeenCalledWith('Morty');
+  });
+
+  it('updates input value when user types', async () => {
+    const Wrapper = () => {
+      const [query, setQuery] = useState('');
+      return <Search query={query} setQuery={setQuery} onSearch={vi.fn()} />;
+    };
+
+    render(<Wrapper />);
+    const input = screen.getByPlaceholderText('Search...');
+
+    await user.type(input, 'Morty');
+
+    expect(input).toHaveValue('Morty');
   });
 });
