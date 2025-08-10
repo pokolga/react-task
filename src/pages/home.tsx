@@ -1,5 +1,5 @@
 import { useEffect, useState, type FC } from 'react';
-import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
+import { Outlet, useSearchParams } from 'react-router-dom';
 import { btnBase } from '../models/constants';
 import ErrorBoundary from '../components/errorBoundary';
 import Search from '../components/search';
@@ -7,7 +7,6 @@ import Result from '../components/result';
 import { useResult } from '../hooks/useResult';
 
 const Home: FC = () => {
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const queryFromParams = searchParams.get('name')?.trim() || '';
   const currentPage = Number(searchParams.get('page')) || 1;
@@ -40,7 +39,7 @@ const Home: FC = () => {
     : '';
 
   return (
-    <main onClick={() => navigate(`/?name=${activeQuery}&page=${currentPage}`)}>
+    <main>
       <h1 className="my-4 text-center text-2xl font-bold text-(--color-bg-button)">
         Characters Rick&amp;Morty
       </h1>
@@ -54,6 +53,8 @@ const Home: FC = () => {
               results={data?.results ?? []}
               error={isError ? errorMessage : undefined}
               loading={isLoading}
+              activeQuery={activeQuery}
+              currentPage={String(currentPage)}
             />
             {data?.results && data?.results?.length > 0 && data?.info && (
               <div className="item-center my-4 flex items-center justify-center gap-4">
