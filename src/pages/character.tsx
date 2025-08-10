@@ -1,6 +1,6 @@
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { type FC } from 'react';
-import { unknownCharacter } from '../models/constants';
+import { defaultCasheTime, unknownCharacter } from '../models/constants';
 import Spinner from '../components/spinner';
 import type { CharacterType } from '../models/types';
 import { useQuery } from '@tanstack/react-query';
@@ -27,6 +27,7 @@ const Character: FC = () => {
     },
     enabled: !!id,
     retry: false,
+    staleTime: defaultCasheTime,
   });
 
   if (isLoading) return <Spinner />;
