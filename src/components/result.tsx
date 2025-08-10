@@ -14,7 +14,10 @@ const Result: FC<ResultType> = ({ results, error, loading }: ResultType) => {
     <fieldset className="relative m-2 flex gap-2 rounded-xs border border-solid border-(--color-bg-button) p-2">
       <legend className="mb-2 text-xs text-(--color-bg-button)">Results</legend>
       {error && (
-        <div className="rounded border border-red-400 bg-red-50 px-2 py-1 text-sm text-red-600">
+        <div
+          className="rounded border border-red-400 bg-red-50 px-2 py-1 text-sm text-red-600"
+          data-testid="error-message"
+        >
           {error}
         </div>
       )}

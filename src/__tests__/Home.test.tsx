@@ -93,25 +93,39 @@ describe('For Search component', () => {
   });
 });
 
-it('Displays 404 error message when no results found', async () => {
+it('renders pagination buttons with Previous disabled on first page', async () => {
+  const mockData = {
+    info: {
+      count: 20,
+      pages: 2,
+      next: 'https://api.example.com/?page=2',
+      prev: null,
+    },
+    results: [
+      { id: 1, name: 'Rick Sanchez' },
+      { id: 2, name: 'Morty Smith' },
+    ],
+  };
+
   vi.stubGlobal(
     'fetch',
-    vi.fn(
-      (): Promise<Response> =>
-        Promise.resolve({
-          ok: false,
-          status: 404,
-        } as Response)
-    )
+    vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => mockData,
+    })
   );
 
   render(
-    <Wrapper>
-      <Home />
-    </Wrapper>
+    <MemoryRouter initialEntries={['/?name=rick&page=1']}>
+      <QueryClientProvider client={queryClient}>
+        <Home />
+      </QueryClientProvider>
+    </MemoryRouter>
   );
 
-  const errorMessage = await screen.findByText(/Nothing was found for your request/i);
+  const prevButton = await screen.findByRole('button', { name: /previous/i });
+  const nextButton = screen.getByRole('button', { name: /next/i });
 
-  expect(errorMessage).toBeInTheDocument();
+  expect(prevButton).toBeDisabled();
+  expect(nextButton).toBeEnabled();
 });

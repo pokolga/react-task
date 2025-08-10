@@ -1,12 +1,13 @@
 import { useEffect, useState, type FC } from 'react';
-import { Outlet, useSearchParams } from 'react-router-dom';
+import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
 import { btnBase } from '../models/constants';
 import ErrorBoundary from '../components/errorBoundary';
 import Search from '../components/search';
 import Result from '../components/result';
-import { useResult } from '../services/useResult';
+import { useResult } from '../hooks/useResult';
 
 const Home: FC = () => {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const queryFromParams = searchParams.get('name')?.trim() || '';
   const currentPage = Number(searchParams.get('page')) || 1;
@@ -39,7 +40,7 @@ const Home: FC = () => {
     : '';
 
   return (
-    <main>
+    <main onClick={() => navigate(`/?name=${activeQuery}&page=${currentPage}`)}>
       <h1 className="my-4 text-center text-2xl font-bold text-(--color-bg-button)">
         Characters Rick&amp;Morty
       </h1>
