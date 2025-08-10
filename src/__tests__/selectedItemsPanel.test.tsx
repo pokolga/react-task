@@ -68,15 +68,13 @@ describe('SelectedItemsPanel tests', () => {
       </QueryClientProvider>
     );
 
-    const anchor = screen.getByText(/virtual link/i) as HTMLAnchorElement;
-
-    expect(anchor).toBeInTheDocument();
-
-    const clickSpy = vi.spyOn(anchor, 'click');
+    const clickSpy = vi.spyOn(HTMLAnchorElement.prototype, 'click');
 
     await userEvent.click(screen.getByText(/Download/i));
 
     expect(clickSpy).toHaveBeenCalled();
+    const anchor = screen.getByRole('link');
+    expect(anchor).toHaveAttribute('href', expect.stringContaining('blob:mock-url'));
   });
 
   it('generates correct filename on download', async () => {
