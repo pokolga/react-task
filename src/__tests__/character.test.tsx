@@ -3,8 +3,15 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import Character from '../pages/character';
 import userEvent from '@testing-library/user-event';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const mockNavigate = vi.fn();
+const queryClient = new QueryClient();
+const Wrapper = ({ children }: { children: React.ReactNode }) => (
+  <MemoryRouter>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  </MemoryRouter>
+);
 
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual<typeof import('react-router-dom')>('react-router-dom');
@@ -41,15 +48,15 @@ describe('Character component', () => {
         json: () => Promise.resolve(mockCharacter),
       })
     );
-
     render(
-      <MemoryRouter initialEntries={['/characters/1']}>
-        <Routes>
-          <Route path="/characters/:id" element={<Character />} />
-        </Routes>
-      </MemoryRouter>
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter initialEntries={['/characters/1']}>
+          <Routes>
+            <Route path="/characters/:id" element={<Character />} />
+          </Routes>
+        </MemoryRouter>
+      </QueryClientProvider>
     );
-
     await waitFor(() => {
       expect(screen.getByText(/Rick Sanchez/i)).toBeInTheDocument();
       expect(screen.getByText(/Status:/)).toHaveTextContent('Status:');
@@ -60,17 +67,19 @@ describe('Character component', () => {
   it('shows error message when fetch fails', async () => {
     vi.stubGlobal(
       'fetch',
-      vi.fn().mockResolvedValue({
-        ok: false,
+      vi.fn().mockImplementation(() => {
+        throw new Error('Nothing was found for your request');
       })
     );
 
     render(
-      <MemoryRouter initialEntries={['/characters/999']}>
-        <Routes>
-          <Route path="/characters/:id" element={<Character />} />
-        </Routes>
-      </MemoryRouter>
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter initialEntries={['/characters/999']}>
+          <Routes>
+            <Route path="/characters/:id" element={<Character />} />
+          </Routes>
+        </MemoryRouter>
+      </QueryClientProvider>
     );
 
     await waitFor(() => {
@@ -96,9 +105,7 @@ describe('Character component', () => {
           }),
       })
     );
-
-    render(<Character />, { wrapper: MemoryRouter });
-
+    render(<Character />, { wrapper: Wrapper });
     const closeButton = await screen.findByRole('button', { name: /❌/ });
     expect(closeButton).toBeInTheDocument();
     expect(closeButton).toHaveClass('cursor-pointer', 'hover:border-red-300', 'active:bg-red-300');
@@ -123,7 +130,7 @@ describe('Character component', () => {
       })
     );
 
-    render(<Character />, { wrapper: MemoryRouter });
+    render(<Character />, { wrapper: Wrapper });
 
     const closeButton = await screen.findByRole('button', { name: /❌/ });
     await userEvent.click(closeButton);
@@ -147,7 +154,7 @@ it('renders character name, status, and species', async () => {
     })
   );
 
-  render(<Character />, { wrapper: MemoryRouter });
+  render(<Character />, { wrapper: Wrapper });
 
   expect(await screen.findByRole('heading', { name: /Morty Smith/i })).toBeInTheDocument();
   const img: HTMLImageElement = screen.getByRole('img');
