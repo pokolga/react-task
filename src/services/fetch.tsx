@@ -20,3 +20,17 @@ export async function getMultipleCharacters(query: string): Promise<CharacterTyp
   }
   return [data];
 }
+
+export async function getCharacter(id: string): Promise<CharacterType> {
+  try {
+    const res = await fetch(`${APICharacter}/${id}`);
+    if (!res.ok) throw new Error(`${res.status}`);
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    if (err instanceof Error) {
+      throw new Error(`Network error: ${err.message}`);
+    }
+    throw new Error(`Unknown error`);
+  }
+}

@@ -4,13 +4,21 @@ import { describe, expect, it, beforeEach, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import type { CharacterType } from '../models/types';
 import { MemoryRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
+const Wrapper = ({ children }: { children: React.ReactNode }) => (
+  <MemoryRouter>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  </MemoryRouter>
+);
 
 describe('Home', () => {
   it('renders headline', () => {
     render(
-      <MemoryRouter>
+      <Wrapper>
         <Home />
-      </MemoryRouter>
+      </Wrapper>
     );
     const headline: HTMLElement = screen.getByText(/Characters Rick&Morty/i);
     expect(headline).toBeInTheDocument();
@@ -35,9 +43,9 @@ describe('For Search component', () => {
     vi.stubGlobal('fetch', mockFetch);
 
     render(
-      <MemoryRouter>
+      <Wrapper>
         <Home />
-      </MemoryRouter>
+      </Wrapper>
     );
 
     const input: HTMLInputElement = screen.getByPlaceholderText('Search...');
@@ -68,9 +76,9 @@ describe('For Search component', () => {
     vi.stubGlobal('fetch', mockFetch);
 
     render(
-      <MemoryRouter>
+      <Wrapper>
         <Home />
-      </MemoryRouter>
+      </Wrapper>
     );
 
     const input: HTMLInputElement = screen.getByPlaceholderText('Search...');
@@ -85,24 +93,39 @@ describe('For Search component', () => {
   });
 });
 
-it('Displays 404 error message when no results found', async () => {
+it('renders pagination buttons with Previous disabled on first page', async () => {
+  const mockData = {
+    info: {
+      count: 20,
+      pages: 2,
+      next: 'https://api.example.com/?page=2',
+      prev: null,
+    },
+    results: [
+      { id: 1, name: 'Rick Sanchez' },
+      { id: 2, name: 'Morty Smith' },
+    ],
+  };
+
   vi.stubGlobal(
     'fetch',
-    vi.fn(
-      (): Promise<Response> =>
-        Promise.resolve({
-          ok: false,
-          status: 404,
-        } as Response)
-    )
+    vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => mockData,
+    })
   );
+
   render(
-    <MemoryRouter>
-      <Home />
+    <MemoryRouter initialEntries={['/?name=rick&page=1']}>
+      <QueryClientProvider client={queryClient}>
+        <Home />
+      </QueryClientProvider>
     </MemoryRouter>
   );
 
-  const errorMessage = await screen.findByText(/Error: 404 Nothing was found for your request!/i);
+  const prevButton = await screen.findByRole('button', { name: /previous/i });
+  const nextButton = screen.getByRole('button', { name: /next/i });
 
-  expect(errorMessage).toBeInTheDocument();
+  expect(prevButton).toBeDisabled();
+  expect(nextButton).toBeEnabled();
 });

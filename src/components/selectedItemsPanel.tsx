@@ -1,11 +1,17 @@
-import { type FC, useRef } from 'react';
+import { type FC, useRef, useState } from 'react';
 import { useCardStore } from '../store/cardStore';
-import { btnBase } from '../models/constants';
+import { btnBase, spinnerDelay } from '../models/constants';
 import { getMultipleCharacters } from '../services/fetch';
+import { useQuery } from '@tanstack/react-query';
+import type { CharacterType } from '../models/types';
+import Spinner from './spinner';
+import { delay } from '../services/spinnerDelay';
 
 type Props = {
   SelectedIds: string[];
 };
+
+type QueryResult = CharacterType[];
 
 export const SelectedItemsPanel: FC<Props> = ({ SelectedIds }: Props) => {
   const { selectedIds, toggleCard } = useCardStore();
@@ -15,37 +21,53 @@ export const SelectedItemsPanel: FC<Props> = ({ SelectedIds }: Props) => {
     selectedIds.map((id) => toggleCard(id));
   };
 
-  const handleDownload = async () => {
-    const data = await getMultipleCharacters(SelectedIds.join());
-    if (!Array.isArray(data) || data.length === 0) return;
+  const { refetch } = useQuery<QueryResult>({
+    queryKey: ['characters', SelectedIds],
+    queryFn: () => getMultipleCharacters(SelectedIds.join()),
+    enabled: false,
+  });
 
-    const csvData = data.map((item) => ({
-      ID: item.id,
-      name: item.name,
-      status: item.status,
-      species: item.species,
-      image: item.image,
-    }));
+  const [isDownloading, setIsDownloading] = useState(false);
 
-    const headers = Object.keys(csvData[0]).join(',') + '\n';
-    const rows = csvData.map((row) => Object.values(row).join(',')).join('\n');
-    const csvContent = headers + rows;
-    const filename = `${data.length}_items.csv`;
+  const handleDownload = async (): Promise<void> => {
+    setIsDownloading(true);
+    try {
+      const result = await refetch();
+      const data = result.data;
+      if (!Array.isArray(data) || data.length === 0) return;
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
+      const csvData = data.map((item: CharacterType) => ({
+        ID: item.id,
+        name: item.name,
+        status: item.status,
+        species: item.species,
+        image: item.image,
+      }));
 
-    if (downloadRef.current) {
-      downloadRef.current.href = url;
-      downloadRef.current.download = filename;
-      downloadRef.current.click();
+      const headers = Object.keys(csvData[0]).join(',') + '\n';
+      const rows = csvData.map((row) => Object.values(row).join(',')).join('\n');
+      const csvContent = headers + rows;
+      const filename = `${data.length}_items.csv`;
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+
+      if (downloadRef.current) {
+        downloadRef.current.href = url;
+        downloadRef.current.download = filename;
+        downloadRef.current.click();
+      }
+
+      URL.revokeObjectURL(url);
+    } finally {
+      await delay(spinnerDelay);
+      setIsDownloading(false);
     }
-
-    URL.revokeObjectURL(url);
   };
 
   return (
     <div
+      onClick={(e) => e.stopPropagation()}
       className="flex w-[350px] items-center justify-between rounded-sm bg-(--color-bg-card) p-4 text-(--color-text)"
       data-testid="selected-panel"
     >
@@ -59,6 +81,7 @@ export const SelectedItemsPanel: FC<Props> = ({ SelectedIds }: Props) => {
       <a ref={downloadRef} className="hidden">
         virtual link
       </a>
+      {isDownloading && <Spinner />}
     </div>
   );
 };
