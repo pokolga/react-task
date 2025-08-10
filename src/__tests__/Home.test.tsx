@@ -4,13 +4,21 @@ import { describe, expect, it, beforeEach, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import type { CharacterType } from '../models/types';
 import { MemoryRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
+const Wrapper = ({ children }: { children: React.ReactNode }) => (
+  <MemoryRouter>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  </MemoryRouter>
+);
 
 describe('Home', () => {
   it('renders headline', () => {
     render(
-      <MemoryRouter>
+      <Wrapper>
         <Home />
-      </MemoryRouter>
+      </Wrapper>
     );
     const headline: HTMLElement = screen.getByText(/Characters Rick&Morty/i);
     expect(headline).toBeInTheDocument();
@@ -35,9 +43,9 @@ describe('For Search component', () => {
     vi.stubGlobal('fetch', mockFetch);
 
     render(
-      <MemoryRouter>
+      <Wrapper>
         <Home />
-      </MemoryRouter>
+      </Wrapper>
     );
 
     const input: HTMLInputElement = screen.getByPlaceholderText('Search...');
@@ -68,9 +76,9 @@ describe('For Search component', () => {
     vi.stubGlobal('fetch', mockFetch);
 
     render(
-      <MemoryRouter>
+      <Wrapper>
         <Home />
-      </MemoryRouter>
+      </Wrapper>
     );
 
     const input: HTMLInputElement = screen.getByPlaceholderText('Search...');
@@ -96,13 +104,14 @@ it('Displays 404 error message when no results found', async () => {
         } as Response)
     )
   );
+
   render(
-    <MemoryRouter>
+    <Wrapper>
       <Home />
-    </MemoryRouter>
+    </Wrapper>
   );
 
-  const errorMessage = await screen.findByText(/Error: 404 Nothing was found for your request!/i);
+  const errorMessage = await screen.findByText(/Nothing was found for your request/i);
 
   expect(errorMessage).toBeInTheDocument();
 });
