@@ -1,8 +1,11 @@
-import { APICharacter } from '../models/constants';
-import type { ApiResponse, CharacterType } from '../models/types';
+import { APICharacter } from "../models/constants";
+import type { ApiResponse, CharacterType } from "../models/types";
 
-export async function getData(query: string, page: number = 1): Promise<ApiResponse> {
-  const showName = query ? `name=${encodeURIComponent(query)}&` : '';
+export async function getData(
+  query: string,
+  page: number = 1,
+): Promise<ApiResponse> {
+  const showName = query ? `name=${encodeURIComponent(query)}&` : "";
   const url = `${APICharacter}?${showName}page=${page}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`${res.status}`);
@@ -10,7 +13,9 @@ export async function getData(query: string, page: number = 1): Promise<ApiRespo
   return data;
 }
 
-export async function getMultipleCharacters(query: string): Promise<CharacterType[]> {
+export async function getMultipleCharacters(
+  query: string,
+): Promise<CharacterType[]> {
   const url = `${APICharacter}/${query}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`${res.status}`);

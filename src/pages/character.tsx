@@ -1,18 +1,18 @@
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { type FC } from 'react';
-import { defaultCasheTime, unknownCharacter } from '../models/constants';
-import Spinner from '../components/spinner';
-import type { CharacterType } from '../models/types';
-import { useQuery } from '@tanstack/react-query';
-import { getCharacter } from '../services/fetch';
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { type FC } from "react";
+import { defaultCasheTime, unknownCharacter } from "../models/constants";
+import Spinner from "../components/spinner";
+import type { CharacterType } from "../models/types";
+import { useQuery } from "@tanstack/react-query";
+import { getCharacter } from "../services/fetch";
 
 const Character: FC = () => {
   const { id } = useParams<{ id: string }>();
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const page = searchParams.get('page') ?? '1';
-  const query = searchParams.get('name') ?? '';
+  const page = searchParams.get("page") ?? "1";
+  const query = searchParams.get("name") ?? "";
 
   const {
     data: character,
@@ -20,9 +20,9 @@ const Character: FC = () => {
     isError,
     error,
   } = useQuery<CharacterType, Error>({
-    queryKey: ['character', id],
+    queryKey: ["character", id],
     queryFn: () => {
-      if (!id) throw new Error('Missing character ID');
+      if (!id) throw new Error("Missing character ID");
       return getCharacter(id);
     },
     enabled: !!id,
@@ -34,7 +34,7 @@ const Character: FC = () => {
   if (isError || character === null)
     return (
       <div>
-        <p>{error.message ? error.message : 'Error loading character'}</p>
+        <p>{error.message ? error.message : "Error loading character"}</p>
       </div>
     );
 
@@ -53,29 +53,29 @@ const Character: FC = () => {
         <p className="text-sm font-bold">ID: {id}</p>
         <img
           src={character?.image ?? unknownCharacter}
-          alt={character?.name ?? 'unknown'}
+          alt={character?.name ?? "unknown"}
           className="mb-2 h-64 rounded object-contain"
         />
-        <h3 className="my-4 text-lg font-bold">{character?.name ?? ''}</h3>
+        <h3 className="my-4 text-lg font-bold">{character?.name ?? ""}</h3>
         <p className="my-1 text-sm">
           <strong>Status: </strong>
-          {character?.status ?? 'Unknown'}
+          {character?.status ?? "Unknown"}
         </p>
         <p className="my-1 text-sm">
           <strong>Species: </strong>
-          {character?.species ?? 'Unknown'}
+          {character?.species ?? "Unknown"}
         </p>
         <p className="my-1 text-sm">
           <strong>Gender: </strong>
-          {character?.gender ?? 'Unknown'}
+          {character?.gender ?? "Unknown"}
         </p>
         <p className="my-1 text-sm">
           <strong>Origin: </strong>
-          {character?.origin?.name ?? 'Unknown'}
+          {character?.origin?.name ?? "Unknown"}
         </p>
         <p className="my-1 text-sm">
           <strong>Location: </strong>
-          {character?.location?.name ?? 'Unknown'}
+          {character?.location?.name ?? "Unknown"}
         </p>
       </div>
     </div>

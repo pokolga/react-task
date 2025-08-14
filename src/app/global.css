@@ -7,12 +7,8 @@
   --color-text-button: #ffffff;
   --color-border: rgb(162, 199, 255);
   --color-bg-card: rgba(162, 199, 255, 0.5);
-
 }
 
-body {
-    background: rgb(1, 58, 143);
-}
 .dark {
   --color-bg: rgb(1, 58, 143);
   --color-text: #ffffff;

@@ -1,10 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
-import { getData } from '../services/fetch';
-import { defaultCasheTime } from '../models/constants';
+import { useQuery } from "@tanstack/react-query";
+import { getData } from "../services/fetch";
+import { defaultCasheTime } from "../models/constants";
 
 export function useResult(activeQuery: string, pageNum: number) {
   return useQuery({
-    queryKey: ['characters', activeQuery, pageNum],
+    queryKey: ["characters", activeQuery, pageNum],
     queryFn: async () => {
       const data = await getData(activeQuery, pageNum);
       return data;

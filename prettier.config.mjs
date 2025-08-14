@@ -1,0 +1,10 @@
+export const semi = true;
+export const singleQuote = true;
+export const tabWidth = 2;
+export const trailingComma = "es5";
+export const printWidth = 100;
+export const bracketSpacing = true;
+export const jsxSingleQuote = false;
+export const arrowParens = "always";
+export const endOfLine = "auto";
+export const plugins = ["prettier-plugin-tailwindcss"];

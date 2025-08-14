@@ -1,11 +1,11 @@
-import { type FC, useRef, useState } from 'react';
-import { useCardStore } from '../store/cardStore';
-import { btnBase, spinnerDelay } from '../models/constants';
-import { getMultipleCharacters } from '../services/fetch';
-import { useQuery } from '@tanstack/react-query';
-import type { CharacterType } from '../models/types';
-import Spinner from './spinner';
-import { delay } from '../services/spinnerDelay';
+import { type FC, useRef, useState } from "react";
+import { useCardStore } from "../store/cardStore";
+import { btnBase, spinnerDelay } from "../models/constants";
+import { getMultipleCharacters } from "../services/fetch";
+import { useQuery } from "@tanstack/react-query";
+import type { CharacterType } from "../models/types";
+import Spinner from "./spinner";
+import { delay } from "../services/spinnerDelay";
 
 type Props = {
   SelectedIds: string[];
@@ -22,7 +22,7 @@ export const SelectedItemsPanel: FC<Props> = ({ SelectedIds }: Props) => {
   };
 
   const { refetch } = useQuery<QueryResult>({
-    queryKey: ['characters', SelectedIds],
+    queryKey: ["characters", SelectedIds],
     queryFn: () => getMultipleCharacters(SelectedIds.join()),
     enabled: false,
   });
@@ -44,12 +44,14 @@ export const SelectedItemsPanel: FC<Props> = ({ SelectedIds }: Props) => {
         image: item.image,
       }));
 
-      const headers = Object.keys(csvData[0]).join(',') + '\n';
-      const rows = csvData.map((row) => Object.values(row).join(',')).join('\n');
+      const headers = Object.keys(csvData[0]).join(",") + "\n";
+      const rows = csvData
+        .map((row) => Object.values(row).join(","))
+        .join("\n");
       const csvContent = headers + rows;
       const filename = `${data.length}_items.csv`;
 
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
 
       if (downloadRef.current) {

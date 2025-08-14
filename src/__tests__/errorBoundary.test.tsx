@@ -1,10 +1,10 @@
-import { expect, it } from 'vitest';
-import ErrorBoundary from '../components/errorBoundary';
-import { render, screen } from '@testing-library/react';
-import React from 'react';
+import { expect, it } from "vitest";
+import ErrorBoundary from "../components/errorBoundary";
+import { render, screen } from "@testing-library/react";
+import React from "react";
 
-it('sets error state from getDerivedStateFromError', () => {
-  const error = new Error('Test error');
+it("sets error state from getDerivedStateFromError", () => {
+  const error = new Error("Test error");
   const result = ErrorBoundary.getDerivedStateFromError(error);
 
   expect(result).toEqual({
@@ -15,18 +15,18 @@ it('sets error state from getDerivedStateFromError', () => {
 
 function BrokenComponent() {
   React.useEffect(() => {
-    throw new Error('Test error');
+    throw new Error("Test error");
   }, []);
   return <div>Loaded</div>;
 }
 
-it('shows Try again button when error occurs', () => {
+it("shows Try again button when error occurs", () => {
   render(
     <ErrorBoundary>
       <BrokenComponent />
-    </ErrorBoundary>
+    </ErrorBoundary>,
   );
 
-  const button = screen.getByRole('button', { name: /Try again!/i });
+  const button = screen.getByRole("button", { name: /Try again!/i });
   expect(button).toBeInTheDocument();
 });

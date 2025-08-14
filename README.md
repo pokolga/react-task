@@ -1,7 +1,6 @@
-# React project 
+# React project
 
-This is the project for the **React 2025 Q3** course at **Rolling Scopes School**, developed by  [**Olga Paklonskaya**](https://github.com/pokolga) under the mentorship of [**Marharyta Malets**](https://github.com/margaryta-maletz).
-
+This is the project for the **React 2025 Q3** course at **Rolling Scopes School**, developed by [**Olga Paklonskaya**](https://github.com/pokolga) under the mentorship of [**Marharyta Malets**](https://github.com/margaryta-maletz).
 
 ## Technology Stack
 
@@ -12,17 +11,16 @@ This is the project for the **React 2025 Q3** course at **Rolling Scopes School*
 **HTML5** – Used for structuring the content following modern web standards.
 
 **TypeScript** – Used for enhancing JavaScript with static typing to improve code quality.
-  
-**Tailwind CSS** – Used for building modern and responsive UI with a utility-first approach.
- 
-**Vite** – Used for bundling optimized production builds.
- 
-**ESLint** – Used for enforcing coding standards and catching errors early during development.
-  
-**Prettier** – Used for ensuring consistent code style across the entire project.
- 
-**Husky** – Used for automating code checks before commits.
 
+**Tailwind CSS** – Used for building modern and responsive UI with a utility-first approach.
+
+**Vite** – Used for bundling optimized production builds.
+
+**ESLint** – Used for enforcing coding standards and catching errors early during development.
+
+**Prettier** – Used for ensuring consistent code style across the entire project.
+
+**Husky** – Used for automating code checks before commits.
 
 ## Project setup
 
@@ -109,8 +107,8 @@ Follow these guidelines for writing tests:
 - Group related tests under `describe` blocks
 - Write test descriptions that read like technical specifications:
   ```typescript
-  describe('App component', () => {
-    test('renders headline', () => {
+  describe("App component", () => {
+    test("renders headline", () => {
       // test code
     });
   });
@@ -120,11 +118,10 @@ Follow these guidelines for writing tests:
 
 Use the following scripts to assist with development, formatting, linting, building, and deploying.
 
- `npm run lint`           Execute ESLint on all `.tsx` files to check for code quality issues.                                                                              
- `npm run format:fix`     Execute Prettier on all `.tsx` files in the `src/` folder to check if the files are properly formatted and automatically fix all fixable issues. 
- `npm run dev`            Start a local development server with Vite. 
- `npm run build`          Build the project for production.           
- `npm run preview`        Preview the production build locally.       
- `npm run deploy`         Build the project and deploy                
- `npm run prepare`        Set up Husky hooks. 
-                                       
+`npm run lint` Execute ESLint on all `.tsx` files to check for code quality issues.  
+ `npm run format:fix` Execute Prettier on all `.tsx` files in the `src/` folder to check if the files are properly formatted and automatically fix all fixable issues.
+`npm run dev` Start a local development server with Vite.
+`npm run build` Build the project for production.  
+ `npm run preview` Preview the production build locally.  
+ `npm run deploy` Build the project and deploy  
+ `npm run prepare` Set up Husky hooks.

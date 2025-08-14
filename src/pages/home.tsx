@@ -1,25 +1,28 @@
-import { useEffect, useState, type FC } from 'react';
-import { Outlet, useSearchParams } from 'react-router-dom';
-import { btnBase } from '../models/constants';
-import ErrorBoundary from '../components/errorBoundary';
-import Search from '../components/search';
-import Result from '../components/result';
-import { useResult } from '../hooks/useResult';
+import { useEffect, useState, type FC } from "react";
+import { Outlet, useSearchParams } from "react-router-dom";
+import { btnBase } from "../models/constants";
+import ErrorBoundary from "../components/errorBoundary";
+import Search from "../components/search";
+import Result from "../components/result";
+import { useResult } from "../hooks/useResult";
 
 const Home: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const queryFromParams = searchParams.get('name')?.trim() || '';
-  const currentPage = Number(searchParams.get('page')) || 1;
+  const queryFromParams = searchParams.get("name")?.trim() || "";
+  const currentPage = Number(searchParams.get("page")) || 1;
 
   const [query, setQuery] = useState(queryFromParams);
   const [activeQuery, setActiveQuery] = useState(queryFromParams);
 
-  const { data, isLoading, isError, error } = useResult(activeQuery, currentPage);
+  const { data, isLoading, isError, error } = useResult(
+    activeQuery,
+    currentPage,
+  );
 
   useEffect(() => {
-    const storedQuery = localStorage.getItem('query');
-    if (!searchParams.has('name') && storedQuery) {
-      setSearchParams({ name: storedQuery, page: '1' });
+    const storedQuery = localStorage.getItem("query");
+    if (!searchParams.has("name") && storedQuery) {
+      setSearchParams({ name: storedQuery, page: "1" });
       setQuery(storedQuery);
       setActiveQuery(storedQuery);
     }
@@ -27,16 +30,16 @@ const Home: FC = () => {
 
   const whenSearch = async (newQuery: string): Promise<void> => {
     const trimmedQuery = newQuery.trim();
-    localStorage.setItem('query', trimmedQuery);
-    setSearchParams({ name: trimmedQuery, page: '1' });
+    localStorage.setItem("query", trimmedQuery);
+    setSearchParams({ name: trimmedQuery, page: "1" });
     setActiveQuery(trimmedQuery);
   };
 
   const errorMessage = isError
     ? /404/.test(String(error))
-      ? 'Nothing was found for your request!'
+      ? "Nothing was found for your request!"
       : String(error)
-    : '';
+    : "";
 
   return (
     <main>
@@ -44,7 +47,9 @@ const Home: FC = () => {
         Characters Rick&amp;Morty
       </h1>
       <ErrorBoundary
-        fallback={<p className="text-red text-2xl font-bold">Something went wrong...</p>}
+        fallback={
+          <p className="text-red text-2xl font-bold">Something went wrong...</p>
+        }
       >
         <div className="flex">
           <div className="px-6 py-2">
@@ -61,7 +66,10 @@ const Home: FC = () => {
                 <button
                   disabled={!data.info.prev}
                   onClick={() =>
-                    setSearchParams({ name: activeQuery, page: String(currentPage - 1) })
+                    setSearchParams({
+                      name: activeQuery,
+                      page: String(currentPage - 1),
+                    })
                   }
                   className={`${btnBase} disabled:cursor-not-allowed disabled:bg-gray-300`}
                 >
@@ -70,7 +78,10 @@ const Home: FC = () => {
                 <button
                   disabled={!data.info.next}
                   onClick={() =>
-                    setSearchParams({ name: activeQuery, page: String(currentPage + 1) })
+                    setSearchParams({
+                      name: activeQuery,
+                      page: String(currentPage + 1),
+                    })
                   }
                   className={`${btnBase} disabled:cursor-not-allowed disabled:bg-gray-300`}
                 >

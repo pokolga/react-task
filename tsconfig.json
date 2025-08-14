@@ -21,6 +21,11 @@
     "noEmit": true,
     "plugins": [{ "name": "next" }]
   },
-  "include": ["./src/**/*", "./next-env.d.ts", "./dist/types/**/*.ts", "**/*.tsx", "postcss.config.js", "tailwind.config.js"],
+  "include": [
+    "./src/**/*",
+    "./next-env.d.ts",
+    "./dist/types/**/*.ts",
+    "**/*.tsx"
+  ],
   "exclude": ["node_modules"]
 }

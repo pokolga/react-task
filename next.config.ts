@@ -1,14 +1,14 @@
-import type { NextConfig } from 'next';
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  output: 'standalone',
-  distDir: './dist',
+  output: "standalone",
+  distDir: "./dist",
   images: {
-    domains: ['rickandmortyapi.com'],
+    domains: ["rickandmortyapi.com"],
   },
   env: {
-    API_URL: 'https://rickandmortyapi.com/api',
+    API_URL: "https://rickandmortyapi.com/api",
   },
 };
 

@@ -1,5 +1,5 @@
-import { QueryClient } from '@tanstack/react-query';
-import { defaultCasheTime } from './models/constants';
+import { QueryClient } from "@tanstack/react-query";
+import { defaultCasheTime } from "./models/constants";
 
 export const queryClient = new QueryClient({
   defaultOptions: {

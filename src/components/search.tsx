@@ -1,5 +1,5 @@
-import React, { type FC } from 'react';
-import { btnBase } from '../models/constants';
+import React, { type FC } from "react";
+import { btnBase } from "../models/constants";
 
 type Props = {
   query: string;
@@ -13,7 +13,7 @@ const Search: FC<Props> = ({ query, setQuery, onSearch }) => {
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       onSearch(query);
     }
   };

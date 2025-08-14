@@ -1,6 +1,6 @@
-import { type FC } from 'react';
-import type { CharacterType } from '../models/types';
-import { useIsSelected, useToggleCard } from '../store/cardStore';
+import { type FC } from "react";
+import type { CharacterType } from "../models/types";
+import { useIsSelected, useToggleCard } from "../store/cardStore";
 
 interface CardProps {
   character: CharacterType;
@@ -23,7 +23,7 @@ export const Card: FC<CardProps> = ({ character, onSelect }) => {
           e.stopPropagation();
           toggleCard(String(character.id));
         }}
-        className={`cursor-poiner relative -top-2 h-4 w-4 rounded-[25%] text-xs text-white select-none ${isSelected ? 'bg-(--color-red-500)' : 'bg-white'}`}
+        className={`cursor-poiner relative -top-2 h-4 w-4 rounded-[25%] text-xs text-white select-none ${isSelected ? "bg-(--color-red-500)" : "bg-white"}`}
       >
         &nbsp;✓
       </div>
