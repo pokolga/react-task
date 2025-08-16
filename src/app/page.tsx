@@ -1,5 +1,4 @@
 import SearchClient from "../components/searchClient";
-import { ApiResponse, CharacterType } from "../models/types";
 import { getCharacter, getInitialCharacters } from "../services/fetch";
 
 export default async function HomePage({
@@ -9,12 +8,8 @@ export default async function HomePage({
 }) {
   const characterId = searchParams.characterId;
 
-  let characterData: CharacterType | null = null;
-  if (characterId) {
-    characterData = await getCharacter(characterId);
-  }
-
-  const initialCharacters: ApiResponse | null = await getInitialCharacters();
+  const characterData = characterId ? await getCharacter(characterId) : null;
+  const initialCharacters = await getInitialCharacters();
 
   return (
     <SearchClient
