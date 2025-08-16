@@ -23,11 +23,22 @@ export default function Navbar() {
         {texts[language].navbar.about}
       </Link>
       <div className="ml-auto  flex gap-2">
-        <button onClick={() => setLanguage("ru")}>RU</button>
-        <button className="" onClick={() => setLanguage("en")}>
+        <button
+          onClick={() => setLanguage("ru")}
+          className={language === "ru" ? "font-bold" : "text-gray-500"}
+        >
+          RU
+        </button>
+        <button
+          onClick={() => setLanguage("en")}
+          className={language === "en" ? "font-bold" : "text-gray-500"}
+        >
           EN
         </button>
-        <button className={btnBase} onClick={toggleTheme}>
+        <button
+          className={[...btnBase, " w-[120px]"].join("")}
+          onClick={toggleTheme}
+        >
           {isDarkMode
             ? `☀️ ${texts[language].navbar.light}`
             : `🌙 ${texts[language].navbar.dark}`}
