@@ -21,7 +21,7 @@ const Result: FC<ResultType> = ({
   loading,
 }: ResultType) => {
   return (
-    <fieldset className="relative m-2 flex gap-2 rounded-xs border border-solid border-(--color-bg-button) p-2">
+    <fieldset className="relative m-2 flex flex-col gap-2 rounded-xs border border-solid border-(--color-bg-button) p-2">
       <legend className="mb-2 text-xs text-(--color-bg-button)">Results</legend>
       {error && (
         <div

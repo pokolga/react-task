@@ -29,7 +29,7 @@ const Pagination: FC<Info> = ({ pages, prev, next }: Info) => {
             page: String(currentPage - 1),
           })
         }
-        className={btnBase}
+        className={[...btnBase, " disabled:bg-gray-300"].join("")}
       >
         Prev
       </button>
@@ -41,7 +41,7 @@ const Pagination: FC<Info> = ({ pages, prev, next }: Info) => {
             page: String(currentPage + 1),
           })
         }
-        className={btnBase}
+        className={[...btnBase, " disabled:bg-gray-300"].join("")}
       >
         Next
       </button>

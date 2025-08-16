@@ -34,6 +34,7 @@ const SearchClient = ({ initialCharacters, characterData }: Props) => {
       if (!res.ok) throw new Error(`${res.status}`);
       const data = await res.json();
       setCharacters(data.results || []);
+      setErrorMessage("");
     } catch (err) {
       if (err instanceof Error) {
         console.error("Fetch error:", err.message);
