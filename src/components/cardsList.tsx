@@ -32,7 +32,6 @@ export const CardsList: FC<ListProps> = ({ results, onClick }): ReactNode => {
           key={char.id}
           character={char}
           onClick={() => {
-            console.log("Navigating to", char.id);
             handleClick(char.id);
           }}
         />

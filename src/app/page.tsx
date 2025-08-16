@@ -1,5 +1,5 @@
 import SearchClient from "../components/searchClient";
-import { CharacterType } from "../models/types";
+import { ApiResponse, CharacterType } from "../models/types";
 import { getCharacter, getInitialCharacters } from "../services/fetch";
 
 export default async function HomePage({
@@ -8,17 +8,18 @@ export default async function HomePage({
   searchParams: { characterId?: string };
 }) {
   const characterId = searchParams.characterId;
+
   let characterData: CharacterType | null = null;
   if (characterId) {
     characterData = await getCharacter(characterId);
   }
-  const initialCharacters = await getInitialCharacters();
+
+  const initialCharacters: ApiResponse | null = await getInitialCharacters();
+
   return (
-    <>
-      <SearchClient
-        initialCharacters={initialCharacters}
-        characterData={characterData}
-      />
-    </>
+    <SearchClient
+      initialCharacters={initialCharacters}
+      characterData={characterData}
+    />
   );
 }

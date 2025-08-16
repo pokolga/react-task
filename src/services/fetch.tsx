@@ -7,6 +7,7 @@ export async function getData(
 ): Promise<ApiResponse> {
   const showName = query ? `name=${encodeURIComponent(query)}&` : "";
   const url = `${APICharacter}?${showName}page=${page}`;
+
   const res = await fetch(url);
   if (!res.ok) throw new Error(`${res.status}`);
   const data = await res.json();
@@ -40,16 +41,16 @@ export async function getCharacter(id: string): Promise<CharacterType> {
   }
 }
 
-export async function getInitialCharacters(): Promise<CharacterType[]> {
+export async function getInitialCharacters(): Promise<ApiResponse | null> {
   try {
     const res = await fetch(`${APICharacter}?page=1`, {
-      next: { revalidate: 3600 }, // или 0, если нужен fresh fetch
+      next: { revalidate: 3600 },
     });
 
     if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
     const data = await res.json();
-    return data.results ?? [];
+    return data ?? Promise.resolve(null);
   } catch {
-    return [];
+    throw Error("Couldn't found characters");
   }
 }
