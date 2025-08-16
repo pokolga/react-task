@@ -14,6 +14,7 @@ type Props = {
 type QueryResult = CharacterType[];
 
 export const SelectedItemsPanel: FC<Props> = ({ SelectedIds }: Props) => {
+  return;
   const { selectedIds, toggleCard } = useCardStore();
   const downloadRef = useRef<HTMLAnchorElement>(null);
 

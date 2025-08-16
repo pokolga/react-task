@@ -1,29 +1,26 @@
+"use client";
 import { type FC } from "react";
 import type { CharacterType } from "../models/types";
 import { CardsList } from "./cardsList";
 import Spinner from "./spinner";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 
 interface ResultType {
   results: CharacterType[];
   error?: string;
-  loading: boolean;
-  activeQuery: string;
-  currentPage: string;
+  loading?: boolean;
+  activeQuery?: string;
+  currentPage?: string;
 }
 
-const Result: FC<ResultType> = ({
-  results,
-  error,
-  loading,
-  activeQuery,
-  currentPage,
-}: ResultType) => {
-  const navigate = useNavigate();
+const Result: FC<ResultType> = ({ results, error, loading }: ResultType) => {
+  //const navigate = useNavigate();
+
   return (
     <fieldset
       className="relative m-2 flex gap-2 rounded-xs border border-solid border-(--color-bg-button) p-2"
-      onClick={() => navigate(`/?name=${activeQuery}&page=${currentPage}`)}
+      //onClick={() => navigate(`/?name=${activeQuery}&page=${currentPage}`)}
     >
       <legend className="mb-2 text-xs text-(--color-bg-button)">Results</legend>
       {error && (

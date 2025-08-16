@@ -1,5 +1,6 @@
 import Navbar from "../components/navbar";
 import "./global.css";
+import LanguageProvider from "./lanquage-provider";
 import ThemeProvider from "./theme-provider";
 
 export const metadata = {
@@ -13,11 +14,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ru">
+    <html lang="en">
       <body>
         <ThemeProvider>
-          <Navbar />
-          {children}
+          <LanguageProvider>
+            <Navbar />
+            {children}
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

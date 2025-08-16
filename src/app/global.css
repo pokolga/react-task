@@ -17,3 +17,9 @@
   --color-border: #ffffff;
   --color-bg-card: rgb(43, 127, 255);
 }
+
+html,
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
