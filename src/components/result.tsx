@@ -3,23 +3,17 @@ import { type FC } from "react";
 import type { CharacterType, Info } from "../models/types";
 import { CardsList } from "./cardsList";
 import Spinner from "./spinner";
-import Pagination from "./pagination";
 
 interface ResultType {
   results: CharacterType[];
-  info: Info | null;
+  info?: Info | null;
   error?: string;
   loading?: boolean;
   activeQuery?: string;
   currentPage?: string;
 }
 
-const Result: FC<ResultType> = ({
-  results,
-  info,
-  error,
-  loading,
-}: ResultType) => {
+const Result: FC<ResultType> = ({ results, error, loading }: ResultType) => {
   return (
     <fieldset className="relative m-2 flex flex-col gap-2 rounded-xs border border-solid border-(--color-bg-button) p-2">
       <legend className="mb-2 text-xs text-(--color-bg-button)">Results</legend>
@@ -33,7 +27,6 @@ const Result: FC<ResultType> = ({
       )}
 
       {results.length > 0 && !error && <CardsList results={results} />}
-      {info && <Pagination {...info} />}
       {loading && <Spinner />}
     </fieldset>
   );

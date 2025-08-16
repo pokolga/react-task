@@ -1,11 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { ApiResponse, CharacterType } from "../models/types";
 import { APICharacter } from "../models/constants";
 import Search from "./search";
 import Result from "./result";
 import Details from "./details";
+import Pagination from "./pagination";
+import Spinner from "./spinner";
 
 type Props = {
   initialCharacters: ApiResponse | null;
@@ -14,49 +17,74 @@ type Props = {
 };
 
 const SearchClient = ({ initialCharacters, characterData }: Props) => {
-  const [query, setQuery] = useState("");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const name = searchParams.get("name") ?? "";
+  const page = searchParams.get("page") ?? "1";
+
   const [characters, setCharacters] = useState<CharacterType[]>(
     initialCharacters?.results ?? [],
   );
+  const [info, setInfo] = useState(initialCharacters?.info ?? null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const onSearch = async (searchQuery: string) => {
+  const fetchCharacters = async () => {
+    setLoading(true);
     try {
-      const res = await fetch(
-        `${APICharacter}/?name=${encodeURIComponent(searchQuery)}&page=1`,
-      );
+      const query = new URLSearchParams({ name, page });
+      const res = await fetch(`${APICharacter}/?${query.toString()}`);
+
       if (res.status === 404) {
         setCharacters([]);
-        setErrorMessage("Error 404 for this request");
+        setInfo(null);
+        setErrorMessage("Error 404: No characters found");
         return;
       }
 
       if (!res.ok) throw new Error(`${res.status}`);
-      const data = await res.json();
+
+      const data: ApiResponse = await res.json();
       setCharacters(data.results || []);
+      setInfo(data.info || null);
       setErrorMessage("");
     } catch (err) {
-      if (err instanceof Error) {
-        console.error("Fetch error:", err.message);
-        throw err;
-      }
-      throw new Error("Unknown error");
+      console.error("Fetch error:", err);
+      setErrorMessage("Network error");
+    } finally {
+      setLoading(false);
     }
   };
-  let info = null;
-  if (initialCharacters?.info) {
-    info = initialCharacters.info;
-  }
+
+  useEffect(() => {
+    fetchCharacters();
+  }, [name, page]);
+
+  const updateSearchParams = (newName: string) => {
+    const params = new URLSearchParams();
+    if (newName) params.set("name", newName);
+    params.set("page", "1");
+    router.push(`/?${params.toString()}`);
+  };
 
   return (
     <>
-      <Search query={query} setQuery={setQuery} onSearch={onSearch} />
+      {loading && <Spinner />}
+      <Search query={name} onSearch={updateSearchParams} />
       <div className="flex">
-        <Result results={characters} info={info} />
-        {errorMessage && <p>{errorMessage}</p>}
+        <div>
+          {!errorMessage && <Result results={characters} />}
+          {errorMessage && (
+            <p className="text-red-500 border border-solid border-red-500 p-2 ml-2">
+              {errorMessage}
+            </p>
+          )}
+          {info && (info.prev || info.next) && <Pagination {...info} />}
+        </div>
         {characterData && (
           <div className="w-1/4 p-4 border-l">
-            <Details params={{ characterData: characterData }} />
+            <Details params={{ characterData }} />
           </div>
         )}
       </div>

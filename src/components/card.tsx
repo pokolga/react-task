@@ -31,7 +31,7 @@ const Card: FC<CardProps> = ({ character, onClick }) => {
           isSelected ? "bg-red-500" : "bg-white"
         }`}
       >
-        ✓
+        &nbsp;✓
       </div>
 
       <img

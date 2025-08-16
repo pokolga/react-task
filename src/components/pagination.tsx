@@ -1,46 +1,36 @@
 "use client";
 
 import { FC } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { btnBase } from "../models/constants";
 import { Info } from "../models/types";
 
 const Pagination: FC<Info> = ({ pages, prev, next }: Info) => {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const currentPage = parseInt(searchParams.get("page") || "1", 10);
   const query = searchParams.get("name") || "";
 
-  const setSearchParams = (params: Record<string, string>) => {
-    const newParams = new URLSearchParams(searchParams.toString());
-    Object.entries(params).forEach(([key, value]) => {
-      newParams.set(key, value);
-    });
-    window.history.pushState({}, "", `?${newParams.toString()}`);
+  const setPage = (newPage: number) => {
+    const params = new URLSearchParams();
+    if (query) params.set("name", query);
+    params.set("page", String(newPage));
+    router.push(`/?${params.toString()}`);
   };
 
   return (
     <div className="item-center my-4 flex items-center justify-center gap-4">
       <button
         disabled={!prev}
-        onClick={() =>
-          setSearchParams({
-            name: query,
-            page: String(currentPage - 1),
-          })
-        }
+        onClick={() => setPage(currentPage - 1)}
         className={[...btnBase, " disabled:bg-gray-300"].join("")}
       >
         Prev
       </button>
       <button
         disabled={!next}
-        onClick={() =>
-          setSearchParams({
-            name: query,
-            page: String(currentPage + 1),
-          })
-        }
+        onClick={() => setPage(currentPage + 1)}
         className={[...btnBase, " disabled:bg-gray-300"].join("")}
       >
         Next
@@ -51,4 +41,5 @@ const Pagination: FC<Info> = ({ pages, prev, next }: Info) => {
     </div>
   );
 };
+
 export default Pagination;

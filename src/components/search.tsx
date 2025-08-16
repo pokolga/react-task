@@ -1,25 +1,28 @@
-import React, { type FC } from "react";
+"use client";
+
+import React, { useState, type FC } from "react";
 import { btnBase } from "../models/constants";
 
 type Props = {
   query: string;
-  setQuery: (value: string) => void;
-  onSearch: (query: string) => Promise<void>;
+  onSearch: (query: string) => void;
 };
 
-const Search: FC<Props> = ({ query, setQuery, onSearch }) => {
+const Search: FC<Props> = ({ query, onSearch }) => {
+  const [localQuery, setLocalQuery] = useState(query);
+
   const inputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
+    setLocalQuery(event.target.value);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
-      onSearch(query);
+      onSearch(localQuery);
     }
   };
 
   const searchClick = () => {
-    onSearch(query);
+    onSearch(localQuery);
   };
 
   return (
@@ -27,7 +30,7 @@ const Search: FC<Props> = ({ query, setQuery, onSearch }) => {
       <legend className="mb-2 text-xs text-(--color-bg-button)">Search</legend>
       <input
         type="text"
-        value={query}
+        value={localQuery}
         onChange={inputChange}
         onKeyDown={handleKeyDown}
         onClick={(e) => e.stopPropagation()}
