@@ -3,8 +3,6 @@ import { type FC } from "react";
 import type { CharacterType } from "../models/types";
 import { CardsList } from "./cardsList";
 import Spinner from "./spinner";
-//import { useNavigate } from "react-router-dom";
-//import { useNavigate } from "react-router-dom";
 
 interface ResultType {
   results: CharacterType[];

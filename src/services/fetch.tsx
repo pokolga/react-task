@@ -39,3 +39,17 @@ export async function getCharacter(id: string): Promise<CharacterType> {
     throw new Error(`Unknown error`);
   }
 }
+
+export async function getInitialCharacters(): Promise<CharacterType[]> {
+  try {
+    const res = await fetch(`${APICharacter}?page=1`, {
+      next: { revalidate: 3600 }, // или 0, если нужен fresh fetch
+    });
+
+    if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
+    const data = await res.json();
+    return data.results ?? [];
+  } catch {
+    return [];
+  }
+}

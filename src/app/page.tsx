@@ -1,18 +1,24 @@
 import SearchClient from "../components/searchClient";
-import { APICharacter } from "../models/constants";
 import { CharacterType } from "../models/types";
+import { getCharacter, getInitialCharacters } from "../services/fetch";
 
-export default async function Page() {
-  const res = await fetch(`${APICharacter}`, {
-    next: { revalidate: 3600 }, // ISR: обновление раз в час
-  });
-  const data = await res.json();
-
-  const characters: CharacterType[] = data.results;
-
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: { characterId?: string };
+}) {
+  const characterId = searchParams.characterId;
+  let characterData: CharacterType | null = null;
+  if (characterId) {
+    characterData = await getCharacter(characterId);
+  }
+  const initialCharacters = await getInitialCharacters();
   return (
-    <main className="p-4">
-      <SearchClient initialCharacters={characters} />
-    </main>
+    <>
+      <SearchClient
+        initialCharacters={initialCharacters}
+        characterData={characterData}
+      />
+    </>
   );
 }

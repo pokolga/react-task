@@ -5,12 +5,15 @@ import { CharacterType } from "../models/types";
 import { APICharacter } from "../models/constants";
 import Search from "./search";
 import Result from "./result";
+import Details from "./details";
 
 type Props = {
   initialCharacters: CharacterType[];
+  characterId?: string;
+  characterData?: CharacterType | null;
 };
 
-const SearchClient = ({ initialCharacters }: Props) => {
+const SearchClient = ({ initialCharacters, characterData }: Props) => {
   const [query, setQuery] = useState("");
   const [characters, setCharacters] =
     useState<CharacterType[]>(initialCharacters);
@@ -26,7 +29,15 @@ const SearchClient = ({ initialCharacters }: Props) => {
   return (
     <>
       <Search query={query} setQuery={setQuery} onSearch={onSearch} />
-      <Result results={characters} />
+      <div className="flex">
+        <Result results={characters} />
+
+        {characterData && (
+          <div className="w-1/4 p-4 border-l">
+            <Details params={{ characterData: characterData }} />
+          </div>
+        )}
+      </div>
     </>
   );
 };

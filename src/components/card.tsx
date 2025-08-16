@@ -6,20 +6,22 @@ import { useIsSelected, useToggleCard } from "../store/cardStore";
 
 interface CardProps {
   character: CharacterType;
-  onSelect?: () => void;
+  onClick?: () => void;
 }
 
-const Card: FC<CardProps> = ({ character }) => {
+const Card: FC<CardProps> = ({ character, onClick }) => {
   const toggleCard = useToggleCard();
   const isSelected = useIsSelected(String(character.id));
 
-  // SSR-гигиена: отложенный рендер
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   if (!mounted) return null;
 
   return (
-    <div className="w-64 rounded p-4 shadow hover:shadow-xl bg-[--color-bg-card] text-[--color-text]">
+    <div
+      onClick={onClick}
+      className="w-64 rounded p-4 shadow hover:shadow-xl bg-[--color-bg-card] text-[--color-text]"
+    >
       <div
         onClick={(e) => {
           e.stopPropagation();
