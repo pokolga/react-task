@@ -1,10 +1,12 @@
-import { type ReactNode, type FC } from "react";
-import type { CharacterType } from "../models/types";
+"use client";
+
+import { FC, ReactNode } from "react";
+import { CharacterType } from "../models/types";
 
 import { useSelectedIds } from "../store/cardStore";
-import { SelectedItemsPanel } from "./selectedItemsPanel";
 import Card from "./card";
-import { useRouter } from "next/navigation";
+import { SelectedItemsPanel } from "./selectedItemsPanel";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface ListProps {
   results: CharacterType[];
@@ -12,12 +14,17 @@ interface ListProps {
 }
 
 export const CardsList: FC<ListProps> = ({ results, onClick }): ReactNode => {
-  //const [searchParams] = useSearchParams();
-  //const page = URLSearchParams.get("page") ?? "1";
-  //const query = URLSearchParams.get("name") ?? "";
-
-  const selectedIds = useSelectedIds();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const selectedIds = useSelectedIds();
+
+  const handleClick = (id: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("characterId", id.toString());
+
+    router.push(`/?${params.toString()}`);
+  };
+
   return (
     <div className="flex flex-wrap justify-center gap-4" onClick={onClick}>
       {results.map((char) => (
@@ -26,9 +33,9 @@ export const CardsList: FC<ListProps> = ({ results, onClick }): ReactNode => {
           character={char}
           onClick={() => {
             console.log("Navigating to", char.id);
-            router.push(`/character/${char.id}`);
+            handleClick(char.id);
           }}
-        /> //navigate(`/characters/${char.id}?page=${page}&name=${query}`)
+        />
       ))}
       {selectedIds.length > 0 && (
         <SelectedItemsPanel SelectedIds={selectedIds} />
