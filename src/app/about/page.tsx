@@ -1,12 +1,15 @@
 "use client";
-import { FC } from "react";
+import { FC, useContext } from "react";
 import Image from "next/image";
+import { LanguageContext } from "../../context/language-context";
+import { texts } from "../../models/texts";
 
 const About: FC = () => {
+  const { language } = useContext(LanguageContext);
   return (
     <div className="h-dvh">
       <h1 className="m-4 mb-10 text-center text-2xl font-bold text-(--color-bg-button)">
-        About me
+        {texts[language].about.about_me}
       </h1>
       <div className="m-8 flex flex-col gap-8 md:flex-row">
         <Image
@@ -17,23 +20,11 @@ const About: FC = () => {
           className="rounded-lg"
         />
         <div className="flex flex-col justify-center gap-4 text-(--color-text)">
+          <p>{texts[language].about.first}</p>
+          <p>{texts[language].about.second}</p>
           <p>
-            I&apos;m a frontend developer and JavaScript instructor with 13
-            years of experience. My students have gone on to build their careers
-            across the globe — from EPAM to Google, from Sweden to Japan.
-            Although I was dismissed from BSU, I remain undeterred: when one
-            when one reality closes, another can be found… or simply opened with
-            a portal.
-          </p>
-          <p>
-            Inspired by art and travel, I channel creative chaos into structured
-            code. I love transforming complex ideas into intuitive interfaces —
-            whether it&apos;s a landing page for an intergalactic corporation or
-            a control panel for a portal gun.
-          </p>
-          <p>
-            <strong>“Oh geez, Morty, it works!”</strong> — that&apos;s usually
-            what people say when they land on one of my sites.
+            <strong>“{texts[language].about.strong}”</strong>{" "}
+            {texts[language].about.third}
           </p>
         </div>
       </div>

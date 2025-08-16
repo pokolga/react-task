@@ -1,6 +1,9 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CharacterType } from "../models/types";
+import { LanguageContext } from "../context/language-context";
+import { useContext } from "react";
+import { texts } from "../models/texts";
 
 export default function Details({
   params,
@@ -13,9 +16,10 @@ export default function Details({
   const character = params.characterData;
   const page = searchParams.get("page") ?? "1";
   const query = searchParams.get("name") ?? "";
+  const { language } = useContext(LanguageContext);
 
   if (!character) {
-    return <p className="p-4 text-red-500">Character could not found</p>;
+    return <p className="p-4 text-red-500">{texts[language].detailes}</p>;
   }
 
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ApiResponse, CharacterType } from "../models/types";
 import { APICharacter } from "../models/constants";
@@ -9,6 +9,7 @@ import Result from "./result";
 import Details from "./details";
 import Pagination from "./pagination";
 import Spinner from "./spinner";
+import { LanguageContext } from "../context/language-context";
 
 type Props = {
   initialCharacters: ApiResponse | null;
@@ -19,6 +20,7 @@ type Props = {
 const SearchClient = ({ initialCharacters, characterData }: Props) => {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { language } = useContext(LanguageContext);
 
   const name = searchParams.get("name") ?? "";
   const page = searchParams.get("page") ?? "1";
@@ -39,7 +41,9 @@ const SearchClient = ({ initialCharacters, characterData }: Props) => {
       if (res.status === 404) {
         setCharacters([]);
         setInfo(null);
-        setErrorMessage("Error 404: No characters found");
+        setErrorMessage(
+          `${language === "en" ? "Error 404: nothing found for this request" : "Ошибка 404: по этому запросу ничего не найдено"}`,
+        );
         return;
       }
 
@@ -51,7 +55,9 @@ const SearchClient = ({ initialCharacters, characterData }: Props) => {
       setErrorMessage("");
     } catch (err) {
       console.error("Fetch error:", err);
-      setErrorMessage("Network error");
+      setErrorMessage(
+        `${language === "en" ? "Unknown error" : "Неизвестная ошибка"}`,
+      );
     } finally {
       setLoading(false);
     }
