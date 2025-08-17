@@ -19,7 +19,9 @@ export default function Details({
   const { language } = useContext(LanguageContext);
 
   if (!character) {
-    return <p className="p-4 text-red-500">{texts[language].detailes}</p>;
+    return (
+      <p className="p-4 text-red-500">{texts[language].detailes.notFound}</p>
+    );
   }
 
   return (
@@ -41,19 +43,24 @@ export default function Details({
         />
         <h3 className="my-4 text-lg font-bold">{character.name}</h3>
         <p className="my-1 text-sm">
-          <strong>Status:</strong> {character.status}
+          <strong>{texts[language].detailes.status}: </strong>
+          {character.status}
         </p>
         <p className="my-1 text-sm">
-          <strong>Species:</strong> {character.species}
+          <strong>{texts[language].detailes.species}: </strong>
+          {character.species}
         </p>
         <p className="my-1 text-sm">
-          <strong>Gender:</strong> {character.gender}
+          <strong>{texts[language].detailes.gender}: </strong>
+          {character.gender}
         </p>
         <p className="my-1 text-sm">
-          <strong>Origin:</strong> {character.origin?.name}
+          <strong>{texts[language].detailes.origin}: </strong>
+          {character.origin?.name}
         </p>
         <p className="my-1 text-sm">
-          <strong>Location:</strong> {character.location?.name}
+          <strong>{texts[language].detailes.location}: </strong>
+          {character.location?.name}
         </p>
       </div>
     </div>

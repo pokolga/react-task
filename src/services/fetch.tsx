@@ -1,5 +1,10 @@
 import { APICharacter } from "../models/constants";
-import type { ApiResponse, CharacterType } from "../models/types";
+import type {
+  ApiResponse,
+  CharacterType,
+  FetchCharactersParams,
+  FetchCharactersResult,
+} from "../models/types";
 
 export async function getData(
   query: string,
@@ -52,5 +57,47 @@ export async function getInitialCharacters(): Promise<ApiResponse | null> {
     return data ?? Promise.resolve(null);
   } catch {
     throw Error("Couldn't found characters");
+  }
+}
+
+export async function fetchCharacters({
+  name,
+  page,
+  language,
+}: FetchCharactersParams): Promise<FetchCharactersResult> {
+  try {
+    const query = new URLSearchParams({ name, page });
+    const res = await fetch(`${APICharacter}/?${query.toString()}`);
+
+    if (res.status === 404) {
+      return {
+        type: "not_found",
+        message:
+          language === "en"
+            ? "Error 404: nothing found for this request"
+            : "Ошибка 404: по этому запросу ничего не найдено",
+      };
+    }
+
+    if (!res.ok) {
+      return {
+        type: "error",
+        message: `${language === "en" ? "Error" : "Ошибка"} ${res.status}`,
+      };
+    }
+
+    const data: ApiResponse = await res.json();
+    return {
+      type: "success",
+      data: {
+        results: data.results || [],
+        info: data.info || null,
+      },
+    };
+  } catch {
+    return {
+      type: "error",
+      message: language === "en" ? "Unknown error" : "Неизвестная ошибка",
+    };
   }
 }

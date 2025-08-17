@@ -37,3 +37,16 @@ export type Store = {
   toggleCard: (id: string) => void;
   isSelected: (id: string) => boolean;
 };
+
+export type Localization = "en" | "ru";
+
+export type FetchCharactersParams = {
+  name: string;
+  page: string;
+  language: Localization;
+};
+
+export type FetchCharactersResult =
+  | { type: "success"; data: { results: CharacterType[]; info: Info | null } }
+  | { type: "not_found"; message: string }
+  | { type: "error"; message: string };

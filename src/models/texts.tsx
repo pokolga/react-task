@@ -19,7 +19,14 @@ export const texts = {
       page: "The page you wanted to visit doesn&apos;t exist or has been moved. You can always start over:",
       try: "Go Home!",
     },
-    detailes: "Character could not found",
+    detailes: {
+      status: "Status",
+      species: "Spices",
+      gender: "Gender",
+      origin: "Origin",
+      location: "Location",
+      notFound: "Character could not found",
+    },
     navbar: {
       home: "Home",
       about: "About",
@@ -55,7 +62,14 @@ export const texts = {
       page: "Страница, которую вы хотели посетить, не существует или была перенесена. Но вы всегда можете начать с начала:",
       try: "На Главную!",
     },
-    detailes: "Такой персонаж не найден",
+    detailes: {
+      status: "Статус",
+      species: "Вид",
+      gender: "Пол",
+      origin: "Происхождение",
+      location: "Локация",
+      notFound: "Такой персонаж не найден",
+    },
     navbar: {
       home: "Главная",
       about: "Кто я",
