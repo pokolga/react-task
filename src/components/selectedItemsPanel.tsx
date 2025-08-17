@@ -1,9 +1,8 @@
-import { type FC, useRef, useState } from "react";
+"use client";
+
+import { useRef, useState } from "react";
 import { useCardStore } from "../store/cardStore";
 import { btnBase, spinnerDelay } from "../models/constants";
-import { getMultipleCharacters } from "../services/fetch";
-import { useQuery } from "@tanstack/react-query";
-import type { CharacterType } from "../models/types";
 import Spinner from "./spinner";
 import { delay } from "../services/spinnerDelay";
 
@@ -11,49 +10,29 @@ type Props = {
   SelectedIds: string[];
 };
 
-type QueryResult = CharacterType[];
-
-export const SelectedItemsPanel: FC<Props> = ({ SelectedIds }: Props) => {
-  return;
+export default function SelectedItemsPanel({ SelectedIds }: Props) {
   const { selectedIds, toggleCard } = useCardStore();
   const downloadRef = useRef<HTMLAnchorElement>(null);
-
-  const handleUnselectAll = () => {
-    selectedIds.map((id) => toggleCard(id));
-  };
-
-  const { refetch } = useQuery<QueryResult>({
-    queryKey: ["characters", SelectedIds],
-    queryFn: () => getMultipleCharacters(SelectedIds.join()),
-    enabled: false,
-  });
-
   const [isDownloading, setIsDownloading] = useState(false);
 
-  const handleDownload = async (): Promise<void> => {
+  const handleUnselectAll = () => {
+    selectedIds.forEach((id) => toggleCard(id));
+  };
+
+  const handleDownload = async () => {
     setIsDownloading(true);
     try {
-      const result = await refetch();
-      const data = result.data;
-      if (!Array.isArray(data) || data.length === 0) return;
+      const response = await fetch("/api", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: SelectedIds }),
+      });
 
-      const csvData = data.map((item: CharacterType) => ({
-        ID: item.id,
-        name: item.name,
-        status: item.status,
-        species: item.species,
-        image: item.image,
-      }));
+      if (!response.ok) throw new Error("Failed to fetch CSV");
 
-      const headers = Object.keys(csvData[0]).join(",") + "\n";
-      const rows = csvData
-        .map((row) => Object.values(row).join(","))
-        .join("\n");
-      const csvContent = headers + rows;
-      const filename = `${data.length}_items.csv`;
-
-      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const blob = await response.blob();
       const url = URL.createObjectURL(blob);
+      const filename = `${SelectedIds.length}_items.csv`;
 
       if (downloadRef.current) {
         downloadRef.current.href = url;
@@ -62,6 +41,8 @@ export const SelectedItemsPanel: FC<Props> = ({ SelectedIds }: Props) => {
       }
 
       URL.revokeObjectURL(url);
+    } catch (error) {
+      throw new Error("Download failed:" + error);
     } finally {
       await delay(spinnerDelay);
       setIsDownloading(false);
@@ -71,10 +52,10 @@ export const SelectedItemsPanel: FC<Props> = ({ SelectedIds }: Props) => {
   return (
     <div
       onClick={(e) => e.stopPropagation()}
-      className="flex w-[350px] items-center justify-between rounded-sm bg-(--color-bg-card) p-4 text-(--color-text)"
+      className="flex w-[350px] items-center justify-between rounded-sm bg-[var(--color-bg-card)] p-4 text-[var(--color-text)]"
       data-testid="selected-panel"
     >
-      <span> Selected: {selectedIds.length}</span>
+      <span>Selected: {selectedIds.length}</span>
       <button className={btnBase} onClick={handleUnselectAll}>
         Unselect all
       </button>
@@ -87,4 +68,4 @@ export const SelectedItemsPanel: FC<Props> = ({ SelectedIds }: Props) => {
       {isDownloading && <Spinner />}
     </div>
   );
-};
+}

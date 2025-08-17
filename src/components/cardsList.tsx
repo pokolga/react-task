@@ -5,8 +5,8 @@ import { CharacterType } from "../models/types";
 
 import { useSelectedIds } from "../store/cardStore";
 import Card from "./card";
-import { SelectedItemsPanel } from "./selectedItemsPanel";
 import { useRouter, useSearchParams } from "next/navigation";
+import SelectedItemsPanel from "./selectedItemsPanel";
 
 interface ListProps {
   results: CharacterType[];
