@@ -6,7 +6,7 @@ export default async function HomePage({
 }: {
   searchParams: { characterId?: string };
 }) {
-  const characterId = searchParams.characterId;
+  const { characterId } = await searchParams;
 
   const characterData = characterId ? await getCharacter(characterId) : null;
   const initialCharacters = await getInitialCharacters();
