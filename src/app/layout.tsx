@@ -1,7 +1,6 @@
 import Navbar from "../components/navbar";
 import "./global.css";
-import LanguageProvider from "./lanquage-provider";
-import ThemeProvider from "./theme-provider";
+import Providers from "./providers";
 
 export const metadata = {
   title: "My App",
@@ -16,12 +15,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ThemeProvider>
-          <LanguageProvider>
-            <Navbar />
-            {children}
-          </LanguageProvider>
-        </ThemeProvider>
+        <Providers>
+          <Navbar />
+          {children}
+        </Providers>
       </body>
     </html>
   );
