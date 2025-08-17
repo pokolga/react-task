@@ -4,6 +4,7 @@ import { CharacterType } from "../models/types";
 import { LanguageContext } from "../context/language-context";
 import { useContext } from "react";
 import { texts } from "../models/texts";
+import Image from "next/image";
 
 export default function Details({
   params,
@@ -36,11 +37,13 @@ export default function Details({
           ❌
         </button>
         <p className="text-sm font-bold">ID: {character.id}</p>
-        <img
-          src={character.image ?? ""}
-          alt={character.name ?? "unknown"}
-          className="mb-2 h-64 rounded object-contain"
-        />
+        <div className="relative mb-2 h-[230px] w-[230px] rounded overflow-hidden">
+          <Image
+            src={character.image ?? ""}
+            alt={character.name ?? "unknown"}
+            fill
+          />
+        </div>
         <h3 className="my-4 text-lg font-bold">{character.name}</h3>
         <p className="my-1 text-sm">
           <strong>{texts[language].detailes.status}: </strong>

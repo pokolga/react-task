@@ -3,6 +3,7 @@
 import { FC, useEffect, useState } from "react";
 import { CharacterType } from "../models/types";
 import { useIsSelected, useToggleCard } from "../store/cardStore";
+import Image from "next/image";
 
 interface CardProps {
   character: CharacterType;
@@ -33,12 +34,9 @@ const Card: FC<CardProps> = ({ character, onClick }) => {
       >
         &nbsp;✓
       </div>
-
-      <img
-        src={character.image}
-        alt={character.name}
-        className="mb-2 h-64 w-full rounded object-cover"
-      />
+      <div className="relative mb-2 h-[200px] w-[200px] rounded overflow-hidden">
+        <Image src={character.image} alt={character.name} fill />
+      </div>
 
       <h3 className="text-lg font-semibold">{character.name}</h3>
       <p className="text-sm">
